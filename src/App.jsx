@@ -11,9 +11,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
 
       <ErrorBoundary>
-        <Navbar />
-        <AppRoutes /> 
-        <Footer />
+           <Navbar />
+           <AppRoutes /> 
+           <Footer />  
       </ErrorBoundary>  
       
     </QueryClientProvider>

@@ -7,22 +7,19 @@
 /* ---------------- Base styles ---------------- */
 
 
-
-html {
+html, body {
   width: 100%;
+  height: 100%;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  width: 100%;
-  height: fit-content;
   min-height: 100vh;
-  overflow-x: hidden;
   background-color: #FAFBFC;
   font-family: Yekan;
+  overflow-x: hidden;
 }
+
 
 p,
 h1,

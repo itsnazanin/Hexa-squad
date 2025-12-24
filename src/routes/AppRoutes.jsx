@@ -2,11 +2,12 @@ import { Routes, Route } from "react-router-dom"
 import Landing from "../pages/Landing";
 import Courses from "../pages/Courses";
 
+
 const AppRoutes = () => {
   return (
       <Routes>
-        <Route index element={<Landing />} />
-        <Route path="/courses" element={<Courses />} />
+        <Route element={<Landing />} />
+        <Route index path="/courses" element={<Courses />} />
       </Routes>
   );
 };
