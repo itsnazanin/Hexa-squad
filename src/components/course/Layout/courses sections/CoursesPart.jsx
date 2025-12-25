@@ -2,17 +2,19 @@ import React from 'react';
 import CourseGrid from './CourseGrid';
 import Pagination from './Pagination';
 
-const CoursePart = ({ courses, title = "دوره‌ها", currentPage, totalPages, onPageChange }) => {
+const CoursePart = ({ courses, teacherMap, title = "دوره‌ها", currentPage, totalPages, onPageChange }) => {
   return (
-    <section className="course-section p-4">
+    <section>
       {/* عنوان و تعداد */}
-      <div className="section-header mb-4">
+      <div>
         <h2 className="text-2xl font-bold">{title}</h2>
         <p>{courses.length} دوره یافت شد</p>
       </div>
 
       {/* گرید دوره‌ها */}
-      <CourseGrid courses={courses} />
+      <CourseGrid 
+      courses={courses} 
+      teacherMap={teacherMap}/>
 
       {/* صفحه‌بندی */}
       {totalPages > 1 && (

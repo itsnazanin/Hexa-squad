@@ -1,9 +1,9 @@
 import filterIcon from '../../../../assets/images/filter.svg'
 import trashIcon from '../../../../assets/images/trash.svg'
-import FilterSection from './FilterSection'
-import PriceFilter from './PriceFilter'
-import TeacherFilter from './TeacherFilter'
-import TypeFilter from './TypeFilter'
+import FilterSection from '../../Layout/filters section/FilterSection'
+import PriceFilter from '../../Layout/filters section/PriceFilter'
+import TeacherFilter from '../../Layout/filters section/TeacherFilter'
+import TypeFilter from '../../Layout/filters section/TypeFilter'
 
 
 const FiltersSidebar = ({
@@ -11,6 +11,7 @@ const FiltersSidebar = ({
   setFilters,
   defaultFilters,
   teachers,
+  teacherLoading,
   isDetect,
   onReset,
 }) => {
@@ -68,6 +69,7 @@ const FiltersSidebar = ({
                 <TeacherFilter
                   teachers={teachers || []}
                   selected={filters?.teachers || []}
+                  teacherLoading={teacherLoading}
                   onChange={(newTeachers) =>
                     setFilters(prev => ({
                       ...prev,

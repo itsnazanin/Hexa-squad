@@ -1,6 +1,5 @@
 import React from 'react'
-import FiltersSidebar from './Layout/filters section/FiltersSidebar'
-
+import FiltersSidebar from '../../components/course/Layout/filters section/FiltersSidebar'
 
 const CourseBottomSection = () => {
   return (
