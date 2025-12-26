@@ -1,108 +1,103 @@
-import { useMemo, useState } from "react";
+import { useMemo , useState } from "react";
+import FiltersSidebar from "../../../../components/course/Layout/filters section/FiltersSidebar";
+import CoursePart from "../../../../components/course/Layout/courses sections/CoursesPart";
 import { useCourses } from "../../../../hooks/useCourses";
 import { useTeachers } from "../../../../hooks/useTeachers";
-import FiltersSidebar from "../../Layout/filters section/FiltersSidebar";
-import CoursePart from "../courses sections/CoursesPart";
 
 const CoursePage = () => {
 
-  // fetch data
-  const { data: coursesData, isLoading: courseLoading } = useCourses();
-  const { data: teachersData, isLoading: teacherLoading } = useTeachers();
+  const { data: coursesData } = useCourses();
+  const { data: teachersData } = useTeachers();
 
-  // normalize data
-  const courses = useMemo(
-    () => coursesData?.data?.courseFilterDtos || [],
-    [coursesData]
-  );
-  const teachers = teachersData?.data || [];
+  console.log(coursesData);
+  console.log(teachersData);
 
-  const teacherMap = useMemo(() => {
-  const map = {};
-  teachers.forEach(teacher => {
-    map[teacher.id] = teacher.fullName;
-  });
-  return map;
-}, [teachers]);
+ 
+ const courses = useMemo(
+  () => coursesData?.data?.courseFilterDtos ?? [],
+  [coursesData]
+);
 
+const teachers = useMemo(
+  () =>
+    teachersData?.map(t => ({
+      id: t.teacherId,
+      name: t.fullName,
+      image: t.pictureAddress,
+      link: t.linkdinProfileLink,
+    })) ?? [],
+  [teachersData]
+);
 
-  // calculate price range
-  const prices = courses.map(c => c.cost);
-  const minPrice = prices.length ? Math.min(...prices) : 0;
-  const maxPrice = prices.length ? Math.max(...prices) : 0;
+  const prices = courses.map(c => c.cost ?? 0);
 
-  // default filters
-  const defaultFilters = {
-    price: {
-      min: minPrice,
-      max: maxPrice,
-    },
-    type: {
-      free: false,
-      paid: false,
-    },
+  const minPrice = prices.length ? Math.min(...prices) : 1500;
+  const maxPrice = prices.length ? Math.max(...prices) : 6000;
+
+    const [filters, setFilters] = useState({
+    price: [1500, 6000],
+    type: { free: false, paid: false },
     teachers: [],
-  };
+  });
 
-  // filters state
-  const [filters, setFilters] = useState(defaultFilters);
 
-  // detect filter change
-  const isFilterChanged =
-    filters.price.min !== defaultFilters.price.min ||
-    filters.price.max !== defaultFilters.price.max ||
-    filters.type.free !== defaultFilters.type.free ||
-    filters.type.paid !== defaultFilters.type.paid ||
-    filters.teachers.length !== defaultFilters.teachers.length;
+    const activePriceRange = useMemo(() => {
+    return filters.price ?? [minPrice, maxPrice];
+     }, [filters.price, minPrice, maxPrice]);
 
-  // reset filters
-  const resetFilters = () => {
-    setFilters(defaultFilters);
-  };
 
-  // filter courses
+
   const filteredCourses = useMemo(() => {
-    return courses.filter(course => {
+  return courses.filter(course => {
+    const priceMatch =
+      course.cost >= activePriceRange[0] &&
+      course.cost <= activePriceRange[1];
 
-      const priceMatch =
-        course.cost >= filters.price.min &&
-        course.cost <= filters.price.max;
+    const typeMatch =
+      (!filters.type.free && !filters.type.paid) ||
+      (filters.type.free && course.cost === 0) ||
+      (filters.type.paid && course.cost > 0);
 
-      const typeMatch =
-        (filters.type.free && course.cost === 0) ||
-        (filters.type.paid && course.cost > 0) ||
-        (!filters.type.free && !filters.type.paid);
+    const teacherMatch =
+      filters.teachers.length === 0 ||
+      filters.teachers.includes(course.teacherId);
 
-      const teacherMatch =
-        filters.teachers.length === 0 ||
-        filters.teachers.includes(course.teacherId);
+    return priceMatch && typeMatch && teacherMatch;
+  });
+}, [courses, filters, activePriceRange]);
 
-      return priceMatch && typeMatch && teacherMatch;
-    });
-  }, [courses, filters]);
 
-  // loading
-  if (courseLoading || teacherLoading) {
-    return <p>در حال بارگذاری...</p>;
-  }
+   const resetFilters = () => {
+  setFilters({
+    price: [minPrice, maxPrice],
+    type: { free: false, paid: false },
+    teachers: [],
+  });
+};
 
-  // render
+
+  // if (courseLoading || teacherLoading) {
+  //   return <p className="text-center mt-10">در حال بارگذاری...</p>;
+  // }
+
   return (
-    <div className="flex gap-6">
-      <FiltersSidebar
-        filters={filters}
-        setFilters={setFilters}
-        defaultFilters={defaultFilters}
-        teachers={teachers}
-        teacherLoading={teacherLoading}
-        isDetect={isFilterChanged}
-        onReset={resetFilters}
-      />
+    <div className="flex gap-6 px-10 py-6">
 
-      {/* بعداً */}
-      <CoursePart 
-      courses={filteredCourses} 
-      teacherMap={teacherMap}/>
+    <FiltersSidebar
+      filters={{
+        ...filters,
+        price: activePriceRange,
+      }}
+      setFilters={setFilters}
+      teachers={teachers}
+      minPrice={minPrice}
+      maxPrice={maxPrice}
+      reset={resetFilters}
+    />
+
+
+      {/* Courses */}
+      <CoursePart courses={filteredCourses} />
     </div>
   );
 };

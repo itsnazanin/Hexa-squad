@@ -1,21 +1,22 @@
 import filterIcon from '../../../../assets/images/filter.svg'
 import trashIcon from '../../../../assets/images/trash.svg'
-import FilterSection from '../../Layout/filters section/FilterSection'
-import PriceFilter from '../../Layout/filters section/PriceFilter'
-import TeacherFilter from '../../Layout/filters section/TeacherFilter'
-import TypeFilter from '../../Layout/filters section/TypeFilter'
+import { Accordion,AccordionContent, AccordionItem, AccordionTrigger} from "../../../ui/accordion";
+import PriceRange from "../../../../components/course/Layout/filters section/PriceRange";
+import CourseType from "../../../../components/course/Layout/filters section/CourseType";
+import TeacherSelect from "../../../../components/course/Layout/filters section/TeacherSelect";
 
 
-const FiltersSidebar = ({
+const FiltersSidebar = ({ 
   filters,
   setFilters,
-  defaultFilters,
   teachers,
-  teacherLoading,
-  isDetect,
-  onReset,
+  minPrice,
+  maxPrice,
+  reset,
 }) => {
 
+
+console.log('setFilters:', setFilters);
 
   return (
     <div className='bg-[#FFFFFF] flex flex-col items-center rounded-3xl w-[300px] shadow-lg mr-10'>
@@ -27,59 +28,58 @@ const FiltersSidebar = ({
                     </span>
                     <p>فیلتر ها</p>                
                 </div>
-                {isDetect && (
-                <span 
-                className='bg-[#F44336] cursor-pointer rounded-xl w-8 h-8 flex items-center justify-center'
-                onClick={onReset}>
+                
+                <span onClick={reset} className='bg-[#F44336] cursor-pointer rounded-xl w-8 h-8 flex items-center justify-center'>
                     <img src={trashIcon} alt="trash icon" />
                 </span> 
-                )}
+                
                 </div>
 
-               {/* price section */}
-               <FilterSection title="قیمت">
-                <PriceFilter
-                value={filters?.price || { min: 0, max: 0 }}
-                min={defaultFilters?.price?.min ?? 0}
-                max={defaultFilters?.price?.max ?? 0}
-                onChange={(newPrice) =>
-                  setFilters(prev => ({
-                    ...prev,
-                    price: newPrice,
-                  }))
-                }
-                />
-               </FilterSection>
+                 <div className="w-[300px] bg-white rounded-2xl shadow p-4">
+                  <Accordion type="multiple" defaultValue={["price", "type", "teachers"]}>
 
-               {/* Type Filter */}
-              <FilterSection title="نوع دوره">
-                <TypeFilter
-                  value={filters?.type}
-                  onChange={(newType) =>
-                    setFilters(prev => ({
-                      ...prev,
-                      type: newType,
-                    }))
-                  }
-                />
-              </FilterSection>
+                    <AccordionItem value="price">
+                      <AccordionTrigger>قیمت</AccordionTrigger>
+                      <AccordionContent>
+                        <PriceRange
+                          value={filters?.price ?? [minPrice, maxPrice]}
+                          min={minPrice}
+                          max={maxPrice}
+                          onChange={(val) =>
+                            setFilters(prev => ({ ...prev, price: val }))
+                          }
+                        />
+                      </AccordionContent>
+                    </AccordionItem>
 
-               {/* Teachers Filter */}
-              <FilterSection title="اساتید">
-                <TeacherFilter
-                  teachers={teachers || []}
-                  selected={filters?.teachers || []}
-                  teacherLoading={teacherLoading}
-                  onChange={(newTeachers) =>
-                    setFilters(prev => ({
-                      ...prev,
-                      teachers: newTeachers,
-                    }))
-                  }
-                />
-              </FilterSection>
-                
-    
+                    <AccordionItem value="type">
+                      <AccordionTrigger>نوع دوره</AccordionTrigger>
+                      <AccordionContent>
+                        <CourseType
+                          value={filters?.type ?? { free: false, paid: false }}
+                          onChange={(val) =>
+                            setFilters(prev => ({ ...prev, type: val }))
+                          }
+                        />
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="teachers">
+                      <AccordionTrigger>اساتید</AccordionTrigger>
+                      <AccordionContent>
+                        <TeacherSelect
+                          teachers={teachers}
+                          selected={filters?.teachers ?? []}
+                          onChange={(val) =>
+                            setFilters(prev => ({ ...prev, teachers: val }))
+                          }
+                        />
+                      </AccordionContent>
+                    </AccordionItem>
+
+                  </Accordion>
+                </div>
+
             </div>
           
   )

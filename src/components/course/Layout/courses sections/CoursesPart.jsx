@@ -1,30 +1,15 @@
-import React from 'react';
-import CourseGrid from './CourseGrid';
-import Pagination from './Pagination';
+const CoursePart = ({ courses }) => {
+  if (!courses.length) return <p>دوره‌ای یافت نشد</p>;
 
-const CoursePart = ({ courses, teacherMap, title = "دوره‌ها", currentPage, totalPages, onPageChange }) => {
   return (
-    <section>
-      {/* عنوان و تعداد */}
-      <div>
-        <h2 className="text-2xl font-bold">{title}</h2>
-        <p>{courses.length} دوره یافت شد</p>
-      </div>
-
-      {/* گرید دوره‌ها */}
-      <CourseGrid 
-      courses={courses} 
-      teacherMap={teacherMap}/>
-
-      {/* صفحه‌بندی */}
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-        />
-      )}
-    </section>
+    <div className="grid grid-cols-3 gap-4">
+      {courses.map(course => (
+        <div key={course.id} className="border p-4 rounded">
+          <h3>{course.title}</h3>
+          <p>{course.cost} تومان</p>
+        </div>
+      ))}
+    </div>
   );
 };
 
