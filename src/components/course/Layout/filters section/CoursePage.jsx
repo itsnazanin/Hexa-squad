@@ -1,4 +1,4 @@
-import { useMemo , useState } from "react";
+import { useMemo , useState , useEffect } from "react";
 import FiltersSidebar from "../../../../components/course/Layout/filters section/FiltersSidebar";
 import CoursePart from "../../../../components/course/Layout/courses sections/CoursesPart";
 import { useCourses } from "../../../../hooks/useCourses";
@@ -9,14 +9,14 @@ const CoursePage = () => {
   const { data: coursesData } = useCourses();
   const { data: teachersData } = useTeachers();
 
-  console.log(coursesData);
-  console.log(teachersData);
 
- 
- const courses = useMemo(
-  () => coursesData?.data?.courseFilterDtos ?? [],
-  [coursesData]
-);
+  const courses = useMemo(
+    () => coursesData?.courseFilterDtos ?? [],
+    [coursesData]
+  );
+
+  console.log("courses length:", courses.length);
+
 
 const teachers = useMemo(
   () =>
@@ -29,6 +29,7 @@ const teachers = useMemo(
   [teachersData]
 );
 
+
   const prices = courses.map(c => c.cost ?? 0);
 
   const minPrice = prices.length ? Math.min(...prices) : 1500;
@@ -40,11 +41,21 @@ const teachers = useMemo(
     teachers: [],
   });
 
+    useEffect(() => {
+    if (courses.length) {
+      setFilters(prev => ({
+        ...prev,
+        price: [minPrice, maxPrice],
+      }));
+    }
+  }, [minPrice, maxPrice, courses.length]);
+
+
+
 
     const activePriceRange = useMemo(() => {
     return filters.price ?? [minPrice, maxPrice];
      }, [filters.price, minPrice, maxPrice]);
-
 
 
   const filteredCourses = useMemo(() => {
@@ -63,12 +74,18 @@ const teachers = useMemo(
       filters.teachers.includes(course.teacherId);
 
     return priceMatch && typeMatch && teacherMatch;
+    
   });
 }, [courses, filters, activePriceRange]);
 
+  console.log({
+  courses,
+  activePriceRange,
+  filteredCourses,
+});
 
    const resetFilters = () => {
-  setFilters({
+    setFilters({
     price: [minPrice, maxPrice],
     type: { free: false, paid: false },
     teachers: [],
@@ -81,7 +98,7 @@ const teachers = useMemo(
   // }
 
   return (
-    <div className="flex gap-6 px-10 py-6">
+    <div className="max-w-[1440px] flex gap-6 px-6 py-6">
 
     <FiltersSidebar
       filters={{
@@ -95,9 +112,8 @@ const teachers = useMemo(
       reset={resetFilters}
     />
 
-
       {/* Courses */}
-      <CoursePart courses={filteredCourses} />
+      <CoursePart courses={filteredCourses ?? [] } />
     </div>
   );
 };

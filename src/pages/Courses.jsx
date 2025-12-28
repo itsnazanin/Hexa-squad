@@ -1,12 +1,12 @@
 import React from 'react'
 import CourseTopSection from '../components/course/CourseTopSection'
-import CourseBottomSection from '../components/course/CourseBottomSection'
+import CoursePage from '@/components/course/Layout/filters section/CoursePage'
 
 const Courses = () => {
   return (
     <div>
       <CourseTopSection />
-      <CourseBottomSection />
+      <CoursePage />
     </div>
   )
 }

@@ -19,7 +19,7 @@ const FiltersSidebar = ({
 console.log('setFilters:', setFilters);
 
   return (
-    <div className='bg-[#FFFFFF] flex flex-col items-center rounded-3xl w-[300px] shadow-lg mr-10'>
+    <div className='bg-[#FFFFFF] h-fit flex flex-col items-center rounded-3xl w-[24%] shadow-lg mr-10'>
             <div className='bg-[#ECEFF1] rounded-2xl w-[90%] flex gap-4 items-center justify-between px-3 py-2 mt-3'>
                {/* headers */}
                 <div className='flex gap-1'>
@@ -35,7 +35,7 @@ console.log('setFilters:', setFilters);
                 
                 </div>
 
-                 <div className="w-[300px] bg-white rounded-2xl shadow p-4">
+                 <div className="w-full bg-white rounded-2xl shadow p-4">
                   <Accordion type="multiple" defaultValue={["price", "type", "teachers"]}>
 
                     <AccordionItem value="price">
@@ -64,7 +64,7 @@ console.log('setFilters:', setFilters);
                       </AccordionContent>
                     </AccordionItem>
 
-                    <AccordionItem value="teachers">
+                    <AccordionItem value="teachers" className='last:border-none'>
                       <AccordionTrigger>اساتید</AccordionTrigger>
                       <AccordionContent>
                         <TeacherSelect

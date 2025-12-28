@@ -71,7 +71,7 @@ const CourseSection = () => {
                           <LikeButton data={course}/>
                           <div className='flex items-center gap-2 '>
                             <span className='text-[#2196F3] font-bold text-[18px]'>{course.cost}</span>
-                            <span>تومان</span>
+                            <p>تومان</p>
                           </div>
                         </div>
                     </div>
