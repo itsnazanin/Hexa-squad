@@ -3,8 +3,27 @@ import { useState , useEffect } from 'react';
 import gridIcon from '../../../../assets/icons/grid.svg';
 import listIcon from '../../../../assets/icons/list.svg';
 import CourseCard from './CourseCard';
+import searchIcon from '../../../../assets/images/search.png';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import CoursePagination from '../CoursePagination';
 
-const CoursesPart = ({ courses = [] }) => {
+const CoursesPart = ({ 
+  courses = [] , 
+  filters, 
+  setFilters, 
+  sort, 
+  setSort, 
+  pageNumber, 
+  totalPages, 
+  setPageNumber 
+  }) => {
+    
   const [layout, setLayout] = useState('grid');
 
   useEffect(() => {
@@ -20,10 +39,27 @@ const CoursesPart = ({ courses = [] }) => {
     );
   }
 
+    const handleSortChange = (value) => {
+    if (value === 'popular') {
+      setSort({
+        sortingCol: 'active',
+        sortType: 'desc',
+      });
+    }
+
+    if (value === 'all') {
+      setSort({
+        sortingCol: '',
+        sortType: '',
+      });
+    }
+  };
+
+
   return (
-    <div className='w-[90%] h-fit'>
+    <div className='max-w-[1440px] h-fit mx-auto'>
       {/* top part */}
-      <div className='w-full h-14 flex gap-4'>
+      <div className='w-full h-14 flex gap-3'>
         <div className='flex gap-2 items-center bg-[#ECEFF1] rounded-2xl px-2'>
            <div onClick={() => setLayout('grid')} 
            variant={layout === 'grid' ? 'default' : 'outline'}
@@ -40,7 +76,36 @@ const CoursesPart = ({ courses = [] }) => {
             <img src={listIcon} alt="list icon" />
           </div>
         </div>
+        
+        <div className='flex items-center w-[63%]'>
+            <input type="text"
+            className='w-full h-full pr-5 border-2 rounded-2xl outline-[#2196F3]'
+            value={filters.search} 
+            onChange={(e) => setFilters({...filters, search: e.target.value})} 
+            placeholder='جستجو کنید ...'/>
+            
+            <div className='relative left-11'>
+              <img src={searchIcon} alt="search icon" />
+            </div>
+        </div>
+
+        <div className='w-[25%]'>
+            <Select onValueChange={handleSortChange} value={sort.sortingCol ? 'popular' : 'all'}>
+              <SelectTrigger>
+                <SelectValue placeholder="مرتب‌سازی" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="all">نمایش همه</SelectItem>
+                <SelectItem value="popular">محبوب‌ترین</SelectItem>
+              </SelectContent>
+            </Select>
+        </div>
+        
+
+            
       </div>
+
       {/* bottom part */}
       <div className={layout === 'grid' 
        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pt-5' 
@@ -49,6 +114,7 @@ const CoursesPart = ({ courses = [] }) => {
           <CourseCard key={course.courseId} course={course} layout={layout} />
         ))}
       </div>
+      <CoursePagination pageNumber={pageNumber} totalPages={totalPages} setPageNumber={setPageNumber} />
     </div>
   )
 }

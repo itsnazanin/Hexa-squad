@@ -1,5 +1,5 @@
 import logo from '../../assets/icons/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import shoppingBag from '../../assets/icons/shopping-bag.png'
 
 const Navbar = () => {
@@ -15,9 +15,9 @@ const Navbar = () => {
 
         {/* Nav Links */}
         <nav>
-          <ul className=" flex gap-10 text-[#263238] list-none px-4">
+          <ul className="flex gap-10 text-[#263238] list-none px-4 font-[Yekan]">
             <li>
-              <Link to="/courses" className="no-underline hover:no-underline text-inherit font-[Yekan]">دوره ها</Link>
+              <NavLink to="/courses" className={({ isActive }) => isActive ? "text-[#2196F3] border-b-2 border-b-[#2196F3] border-b-spacing-y-3 no-underline hover:no-underline" : "text-inherit"}>دوره ها</NavLink>
             </li>
             <li>
               <Link to="" className="no-underline hover:no-underline text-inherit">اساتید</Link>

@@ -5,7 +5,7 @@ import Dots1 from '../../assets/images/Dots1.png'
 
 const CourseTopSection = () => {
   return (
-    <div className='max-w-[1440px] h-fit mx-auto flex  border py-28'>
+    <div className='max-w-[1440px] h-fit mx-auto flex py-28'>
         {/* right side */}
         <div className='flex flex-wrap justify-start w-[55%]'>
             <span className='relative top-[90px] right-[40px] w-[100px] h-[100px] bg-[#E7F0FC] rounded-bl-[100px]'></span>

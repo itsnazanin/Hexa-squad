@@ -8,8 +8,6 @@ import LikeButton from '../../../../components/LikeButton';
 
 const CourseCard = ({ course, layout }) => {
 
-console.log(course)
-
   return (
     <div className={layout === 'list' ? 'flex flex-row gap-5 w-full items-center cursor-pointer bg-[#ffffff] rounded-3xl shadow-md px-6 py-6 mt-4'
      : 'flex flex-col bg-[#ffffff] rounded-3xl shadow-md px-3 py-4 gap-4 cursor-pointer'}>

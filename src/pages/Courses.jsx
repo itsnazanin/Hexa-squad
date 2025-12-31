@@ -4,7 +4,7 @@ import CoursePage from '@/components/course/Layout/filters section/CoursePage'
 
 const Courses = () => {
   return (
-    <div>
+    <div className='max-w-[1440px] mx-auto pl-6'>
       <CourseTopSection />
       <CoursePage />
     </div>

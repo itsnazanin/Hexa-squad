@@ -1,20 +1,47 @@
 import { getCourses } from "../core/services/api/courses";
 import { useQuery } from "@tanstack/react-query";
 
-export const useCourses = (params = {}) => {
+export const useCourses = ({
+  pageNumber = 1,
+  rows = 10,
+  sortingCol = null,
+  sortType = null,
+} = {}) => {
+
   return useQuery({
-    queryKey: ['courses', params],
+    queryKey: [
+      "courses",
+      pageNumber,
+      rows,
+      sortingCol,
+      sortType,
+    ],
+
     queryFn: async () => {
-      const res = await getCourses({
-        pageNumber: params.pageNumber ?? 1,
-        rows: params.rows ?? 10,
-        sortCol: params.sortCol ?? null,
-        sortType: params.sortType ?? null,
-        techCount: params.techCount ?? null,
+
+      // 🔥 لاگ خیلی مهم
+      console.log("FETCH COURSES:", {
+        pageNumber,
+        rows,
+        sortingCol,
+        sortType,
       });
+
+      const res = await getCourses({
+        pageNumber,
+        rows,
+        sortingCol,
+        sortType,
+      });
+
+      console.log(
+        "RESPONSE IDS:",
+        res.data.courseFilterDtos?.map(c => c.courseId)
+      );
 
       return res.data;
     },
+
     keepPreviousData: true,
   });
 };
