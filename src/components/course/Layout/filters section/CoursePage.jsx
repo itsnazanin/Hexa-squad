@@ -5,9 +5,7 @@ import { useCourses } from "../../../../hooks/useCourses";
 import { useTeachers } from "../../../../hooks/useTeachers";
 
 const CoursePage = () => {
-  /* =======================
-     states
-  ======================= */
+
   const [sort, setSort] = useState({
     sortingCol: "",
     sortType: "",
@@ -23,9 +21,6 @@ const CoursePage = () => {
     search: "",
   });
 
-  /* =======================
-     api
-  ======================= */
   const { data: coursesData } = useCourses({
     pageNumber,
     rows: rowsOfPage,
@@ -35,9 +30,6 @@ const CoursePage = () => {
 
   const { data: teachersData } = useTeachers();
 
-  /* =======================
-     derived data
-  ======================= */
   const courses = useMemo(
     () => coursesData?.courseFilterDtos ?? [],
     [coursesData]
@@ -59,9 +51,7 @@ const CoursePage = () => {
     [teachersData]
   );
 
-  /* =======================
-     price range
-  ======================= */
+
   const prices = courses.map((c) => c.cost ?? 0);
   const minPrice = prices.length ? Math.min(...prices) : 1500;
   const maxPrice = prices.length ? Math.max(...prices) : 6000;
@@ -73,24 +63,19 @@ const CoursePage = () => {
     }));
   }, [minPrice, maxPrice]);
 
-  /* =======================
-     reset page when filters or sort change
-  ======================= */
   useEffect(() => {
   setPageNumber(1);
 }, [
   filters.search,
   filters.type.free,
   filters.type.paid,
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   filters.teachers.join(','),
   sort.sortingCol,
   sort.sortType
 ]);
 
 
-  /* =======================
-     client filters (search, price, teacher)
-  ======================= */
   const filteredCourses = useMemo(() => {
     return courses.filter((course) => {
       const priceMatch =
@@ -116,18 +101,14 @@ const CoursePage = () => {
     });
   }, [courses, filters]);
 
-  /* =======================
-     safety: empty page
-  ======================= */
+
   useEffect(() => {
-    if (filteredCourses.length === 0 && pageNumber > 1) {
+    if (filteredCourses.length === 0 && pageNumber > 1) { 
       setPageNumber(1);
     }
   }, [filteredCourses.length, pageNumber]);
 
-  /* =======================
-     reset filters
-  ======================= */
+
   const resetFilters = () => {
     setFilters({
       price: [minPrice, maxPrice],
@@ -137,9 +118,6 @@ const CoursePage = () => {
     });
   };
 
-  /* =======================
-     render
-  ======================= */
   return (
     <div className="max-w-[1440px] flex gap-8 px-6 py-6">
       <FiltersSidebar
