@@ -26,7 +26,7 @@ const Navbar = () => {
               <Link to="" className="no-underline hover:no-underline text-inherit">ارتباط با ما</Link>
             </li>
             <li>
-              <Link to="" className="no-underline hover:no-underline text-inherit">اخبار و مقالات</Link>
+              <NavLink to="/blogs" className={({ isActive }) => isActive ? "text-[#2196F3] border-b-2 border-b-[#2196F3] border-b-spacing-y-3 no-underline hover:no-underline" : "text-inherit"}>اخبار و مقالات</NavLink>
             </li>
           </ul>
         </nav>

@@ -8,8 +8,8 @@ const AppRoutes = () => {
   return (
       <Routes>
         <Route element={<Landing />} />
-        <Route index path="/courses" element={<Courses />} />
-        <Route path="/blogs" element={<Blogs />}/>
+        <Route path="/courses" element={<Courses />} />
+        <Route index path="/blogs" element={<Blogs />}/>
       </Routes>
   );
 };

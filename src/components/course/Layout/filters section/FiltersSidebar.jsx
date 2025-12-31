@@ -16,12 +16,10 @@ const FiltersSidebar = ({
 }) => {
 
 
-console.log('setFilters:', setFilters);
-
   return (
     <div className='bg-[#FFFFFF] h-fit flex flex-col items-center rounded-3xl w-[28%] shadow-lg mr-10'>
             <div className='bg-[#ECEFF1] rounded-2xl w-[90%] flex gap-4 items-center justify-between px-3 py-2 mt-3'>
-               {/* headers */}
+               
                 <div className='flex gap-1'>
                     <span>
                         <img src={filterIcon} alt="filter icon" />
