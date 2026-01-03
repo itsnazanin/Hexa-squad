@@ -1,26 +1,39 @@
 import React from 'react'
-import searchIcon from '../../assets/images/search.png'
+import SerachBox from './SerachBox'
+import FiltersTabs from './FiltersTabs'
+import { useState } from 'react'
+import BlogsGrid from './BlogsGrid'
+import { useNews } from '../../hooks/useNews'
+
 
 const BlogBottomSection = () => {
+    const [filter, setFilter] = useState('all');
+      const { data, isLoading, isError } = useNews({
+      filter
+    });
+
+    console.log(data);
+
+
   return (
     <div>
-        {/* top section */}
-        <div className='flex items-center justify-center gap-4'>
-            <input type="text"
-            className='w-[50%] outline-none h-14 rounded-2xl shadow-lg pr-4'
-            placeholder='دنبال چی میگردی' />
-            <div className='relative left-[60px]'>
-              <img src={searchIcon} alt="search icon" />  
-            </div>
+      <div className='flex justify-center'>
+          <SerachBox />
 
-            <div className='bg-[#FFFFFF] shadow-md h-14 flex items-center justify-around text-[#607D8B] rounded-2xl w-[37%]'>
-                <p>همه</p>
-                <p> محبوب ترین ها</p>
-                <p>پربازدیدترین ها</p>
-                <p>جدیدترین ها</p>
-            </div>
+          <FiltersTabs 
+          value={filter}
+          onChange={(value) => {
+            setFilter(value);
+          }}/>    
+
+      </div>
+
+
+        <BlogsGrid 
+        data={data}
+        isLoading={isLoading}
+        isError={isError}/>
             
-        </div>
     </div>
   )
 }

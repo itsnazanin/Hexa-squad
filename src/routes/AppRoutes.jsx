@@ -7,7 +7,7 @@ import Blogs from "../pages/Blogs";
 const AppRoutes = () => {
   return (
       <Routes>
-        <Route element={<Landing />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/courses" element={<Courses />} />
         <Route index path="/blogs" element={<Blogs />}/>
       </Routes>

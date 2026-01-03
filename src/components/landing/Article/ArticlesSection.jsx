@@ -6,12 +6,13 @@ import SmallPostCard from '../Article/SmallPostCard'
 import FeaturedPostCard from './FeaturedPostCard'
 
 const ArticlesSection = () => {
-  const { data, error, isLoading } = useNews({
-    pageNumber: 1,
-    rows: 4,
-    sortCol: 'Date',
-    sortType: 'desc'
-  })
+const { data, error, isLoading } = useNews({
+  filter: 'landing',
+  page: 1
+})
+
+  console.log('NEWS DATA:', data);
+
 
   if (isLoading) return <p>در حال بارگذاری...</p>
   if (error) return <p>ارور وجود دارد</p>
@@ -21,7 +22,6 @@ const ArticlesSection = () => {
   const featuredArticle = articles[0]
   const listArticles = articles.slice(1, 4)
 
-  // ✅ نرمال‌سازی استاندارد
   const mappedFeatured = featuredArticle
     ? normalizeArticle(featuredArticle)
     : null
