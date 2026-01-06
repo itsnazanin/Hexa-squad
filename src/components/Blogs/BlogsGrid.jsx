@@ -4,11 +4,11 @@ import BlogCard from './BlogCard'
 const BlogsGrid = ({ data , isError, isLoading }) => {
 
     if (isLoading) {
-    return <p className="text-sm text-gray-500">در حال بارگذاری...</p>;
+    return <p className="text-sm text-gray-500 text-center py-10">در حال بارگذاری...</p>;
     }
 
     if (isError) {
-        return <p className="text-sm text-red-500">خطا در دریافت اطلاعات</p>;
+        return <p className="text-sm text-red-500 text-center">خطا در دریافت اطلاعات</p>;
     }
 
     if (!data?.news?.length) {

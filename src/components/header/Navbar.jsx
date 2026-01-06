@@ -41,7 +41,9 @@ const Navbar = () => {
           </div>
 
           {/* Login */}
-          <p className="px-4 py-3  md:px-6 md:py-3 md:text-sm sm:text-xs whitespace-nowrap lg:text-base rounded-full bg-[#2196F3] text-white shadow-sm font-bold">ورود به حساب</p>
+          <Link to="/login">
+             <p className="px-4 py-3  md:px-6 md:py-3 md:text-sm sm:text-xs whitespace-nowrap lg:text-base rounded-full bg-[#2196F3] text-white shadow-sm font-bold cursor-pointer">ورود به حساب</p>
+          </Link>
         </div>
       </div>
     </div>

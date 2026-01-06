@@ -12,8 +12,8 @@ function App() {
 
       <ErrorBoundary>
            <Navbar />
-           <AppRoutes /> 
-           <Footer />  
+           <AppRoutes />
+           <Footer />
       </ErrorBoundary>  
       
     </QueryClientProvider>

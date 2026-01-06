@@ -12,8 +12,8 @@ import 'swiper/css/pagination';
 const SliderSection = () => {
     const { data, isLoading, error } = useTeachers()
 
-    if (isLoading) return <p>در حال بارگذاری...</p>;
-    if (error) return <p>ارور وجود دارد</p>;
+    if (isLoading) return <p className='text-center py-10'>در حال بارگذاری...</p>;
+    if (error) return <p className='text-center py-10'>ارور وجود دارد</p>;
 
     const teachers = data || [];
 

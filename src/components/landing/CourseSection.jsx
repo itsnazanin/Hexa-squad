@@ -8,6 +8,7 @@ import reactpics from '../../assets/images/reactpics.png';
 import pythonpics from '../../assets/images/pythonpics.png';
 import netpics from '../../assets/images/.netpics.png';
 import LikeButton from '../LikeButton';
+import { Link } from 'react-router-dom';
 
 
 const CourseSection = () => {
@@ -22,8 +23,8 @@ const CourseSection = () => {
          techCount: 0
     })
 
-     if (isLoading) return <p>در حال بارگذاری...</p>;
-     if (isError) return <p>ارور وجود دارد</p>;
+     if (isLoading) return <p className='text-center py-10'>در حال بارگذاری...</p>;
+     if (isError) return <p className='text-center py-10'>ارور وجود دارد</p>;
 
      const courses = (data?.courseFilterDtos || []).slice(0,4);
 
@@ -58,7 +59,7 @@ const CourseSection = () => {
                             </div>
                             <div className='flex justify-center gap-1'>
                                 <img className='mb-1' src={calendarIcon} alt="calendar icon" />
-                                {course.startTime?.length < 5 || <p>1 اذر 1404</p>}
+                                {course.startTime?.length < 5 || <p>1 اذر</p>}
                             </div>
                         </div>
 
@@ -79,8 +80,10 @@ const CourseSection = () => {
                }
 
                </div>
-
-               <button className='py-3 px-6 rounded-full bg-[#2196F3] text-white font-semibold cursor-pointer' >مشاهده همه</button>
+              
+               <Link to="/courses">
+                    <button className='py-3 px-6 rounded-full bg-[#2196F3] text-white font-semibold cursor-pointer' >مشاهده همه</button>
+               </Link>
 
             </div>
     </div>  

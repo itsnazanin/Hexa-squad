@@ -10,7 +10,7 @@ const CourseCard = ({ course, layout }) => {
 
   return (
     <div className={layout === 'list' ? 'flex flex-row gap-5 w-full items-center cursor-pointer bg-[#ffffff] rounded-3xl shadow-md px-6 py-6 mt-4'
-     : 'flex flex-col bg-[#ffffff] rounded-3xl shadow-md px-3 py-4 gap-4 cursor-pointer'}>
+     : 'flex flex-col w-fit bg-[#ffffff] h-fit rounded-3xl shadow-md px-3 py-4 gap-4 cursor-pointer'}>
       <div>
         <img className={layout === 'list' 
         ? 'w-32 h-32 object-cover rounded-2xl' 
@@ -57,7 +57,7 @@ const CourseCard = ({ course, layout }) => {
                        <span className='w-5 h-4'>
                          <img src={calendarIcon} alt="calendar icon" />
                        </span>
-                       <p>{course.startTime && course.startTime.length >= 5 ? course.startTime : '۱ آذر ۱۴۰۴'}</p>
+                       <p>{course.startTime && course.startTime.length >= 5 ? course.startTime : '۱ آذر '}</p>
                     </span>
 
                   </div>
@@ -71,7 +71,7 @@ const CourseCard = ({ course, layout }) => {
             
           ) : (
             <div>
-                <div className='flex gap-5 pt-3 pb-2 px-4 w-[220px] relative left-1.5 mt-3 whitespace-nowrap bg-[#ECEFF1] rounded-full text-[#263238] text-xs justify-center items-center'>
+                <div className='flex gap-6 pt-3 pb-2 px-4 w-fit mt-3 whitespace-nowrap bg-[#ECEFF1] rounded-full text-[#263238] text-xs justify-center items-center'>
                   <div className='flex justify-center gap-1'>
                     <img className='mb-1' src={noteIcon} alt="note icon" />
                     <p>{`${course.capacity} درس`}</p>
@@ -82,7 +82,7 @@ const CourseCard = ({ course, layout }) => {
                   </div>
                   <div className='flex justify-center gap-1'>
                     <img className='mb-1' src={calendarIcon} alt="calendar icon" />
-                    {course.startTime?.length < 5 || <p>1 اذر 1404</p>}
+                    {course.startTime?.length < 5 || <p>1 اذر</p>}
                   </div>
 
                 </div>

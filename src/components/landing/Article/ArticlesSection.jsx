@@ -4,6 +4,7 @@ import { useNews } from '../../../hooks/useNews'
 import { normalizeArticle } from '../../../core/services/adapters/normalizeArticle'
 import SmallPostCard from '../Article/SmallPostCard'
 import FeaturedPostCard from './FeaturedPostCard'
+import { Link } from 'react-router-dom'
 
 const ArticlesSection = () => {
 const { data, error, isLoading } = useNews({
@@ -14,8 +15,8 @@ const { data, error, isLoading } = useNews({
   console.log('NEWS DATA:', data);
 
 
-  if (isLoading) return <p>در حال بارگذاری...</p>
-  if (error) return <p>ارور وجود دارد</p>
+  if (isLoading) return <p className='text-center py-10'>در حال بارگذاری...</p>
+  if (error) return <p className='text-center py-10'>ارور وجود دارد</p>
 
   const articles = data?.news || []
 
@@ -58,10 +59,13 @@ const { data, error, isLoading } = useNews({
         </div>
 
       </div>
-
-      <button className='py-3 px-6 relative top-10 rounded-full bg-[#2196F3] text-white font-semibold'>
-        مشاهده همه
-      </button>
+      
+      <Link to="/blogs">
+        <button className='py-3 px-6 relative top-10 rounded-full bg-[#2196F3] text-white font-semibold'>
+          مشاهده همه
+        </button>
+      </Link>
+      
     </div>
   )
 }

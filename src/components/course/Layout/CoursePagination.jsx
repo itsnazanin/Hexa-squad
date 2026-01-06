@@ -37,6 +37,7 @@ const CoursePagination = ({ pageNumber, totalPages, setPageNumber }) => {
           return (
             <PaginationItem key={page}>
               <PaginationLink
+                className='cursor-pointer'
                 href="#"
                 isActive={page === pageNumber}
                 onClick={(e) => {
