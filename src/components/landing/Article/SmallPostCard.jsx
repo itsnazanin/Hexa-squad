@@ -5,8 +5,8 @@ const SmallPostCard = ({ title, image, date , viewCount , describe}) => {
 
   return (
     <div className="flex items-start gap-5 pt-10 pl-20 ">
-        <div className='w-[220px]'>
-          <img className="rounded-3xl object-cover" src={image} alt={title} />
+        <div className=' max-w-[220px]'>
+          <img className="rounded-3xl shadow-md object-cover" src={image} alt={title} />
         </div>
 
         <div className='flex flex-col justify-start pt-4'> 

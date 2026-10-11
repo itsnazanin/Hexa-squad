@@ -1,30 +1,26 @@
 import React from 'react'
 import SerachBox from './SerachBox'
 import FiltersTabs from './FiltersTabs'
-import { useState , useEffect } from 'react'
+import { useState } from 'react'
 import BlogsGrid from './BlogsGrid'
-import { useNews } from '../../hooks/useNews'
 import BlogsPagination from './BlogsPagination'
+import { useBlogs } from '@/features/courses/hooks/useBlogs'
 
 
 const BlogBottomSection = () => {
 
     const [ pageNumber , setPageNumber ] = useState(1);
-    const [ rowsOfPage ] = useState(10);
     const [filter, setFilter] = useState('all');
+    const rowsOfPage = 10
 
-
-    const { data, isLoading, isError } = useNews({
-    filter,
-    page: pageNumber , 
-    rows: rowsOfPage ,
+    const { data, isLoading, isError , error} = useBlogs({
+       page: pageNumber , 
+       limit: rowsOfPage ,
     });
+
+    const blogs = data?.result?.blogs ?? []
     
-    const totalPage = (data?.totalCount) ? Math.ceil(data.totalCount / rowsOfPage) : 1;
-    
-    useEffect(() => {
-        setPageNumber(1);
-    },[filter])
+    const totalPage = data?.result?.pagination?.totalPages ?? 1;
 
 
   return (
@@ -41,9 +37,11 @@ const BlogBottomSection = () => {
       </div>
 
         <BlogsGrid 
-        data={data}
+        data={blogs}
         isLoading={isLoading}
-        isError={isError}/>
+        isError={isError}
+        error={error}
+        />
 
         <BlogsPagination 
          pageNumber={pageNumber}

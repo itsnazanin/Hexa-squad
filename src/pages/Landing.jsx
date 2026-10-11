@@ -18,8 +18,6 @@ const Landing = () => {
         <SliderSection/>
         <ArticlesSection/>
     </main>
-        
-
     </>
   )
 }

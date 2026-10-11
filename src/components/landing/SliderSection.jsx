@@ -2,7 +2,7 @@ import React from 'react'
 import vector from '../../assets/images/vector.png'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
-import { useTeachers } from '../../hooks/useTeachers';
+import { useTeachers } from '@/features/courses/hooks/useTeachers';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -15,7 +15,7 @@ const SliderSection = () => {
     if (isLoading) return <p className='text-center py-10'>در حال بارگذاری...</p>;
     if (error) return <p className='text-center py-10'>ارور وجود دارد</p>;
 
-    const teachers = data || [];
+    const teachers = data?.teachers ?? [];
 
   return (
     <div className='max-w-[1440px] mx-auto max-h-[660px]'>
@@ -40,15 +40,15 @@ const SliderSection = () => {
           }}
         >
           {teachers.map((teacher, index) => (
-            <SwiperSlide key={teacher.teacherId}>
+            <SwiperSlide key={teacher.id}>
               <div className={` p-4 text-center
                 ${index % 2 === 0 ? 'mt-0' : 'mt-[60px]'}`}>
                 <img
-                  src={teacher.pictureAddress}
-                  alt={teacher.pictureAddress}
+                  src={teacher.avatar}
+                  alt={teacher.name}
                   className="w-full h-56 object-cover rounded-3xl mb-4"
                 />
-                <h3 className="font-bold text-[#263238]">{teacher.fullName}</h3>
+                <h3 className="font-bold text-[#263238]">{teacher.name}</h3>
               </div>
             </SwiperSlide>
           ))}

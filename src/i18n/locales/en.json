@@ -1,0 +1,15 @@
+{
+  "common": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "home": "Home",
+    "courses": "Courses",
+    "blogs": "Blogs",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}

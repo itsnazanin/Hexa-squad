@@ -1,3 +1,4 @@
+import { formatDate } from '@/core/utils/formatDate'
 import pics from '../../../assets/images/pics.png'
 
 const FALLBACK_IMAGE = pics
@@ -8,13 +9,13 @@ export const normalizeArticle = (article) => {
   return {
     id: article.id,
     title: article.title || 'عنوان مقاله',
-    image: article.currentImageAddress?.trim()
-      ? article.currentImageAddress
+    image: article.blogImage?.trim()
+      ? article.blogImage
       : FALLBACK_IMAGE,
-    describe: article.describe?.length > 80
-      ? article.describe.slice(0, 50) + ' ...'
-      : article.describe || FALLBACK_DESC,
-    date: article.insertDate || '---',
-    viewCount: article.currentView ?? 0
+    describe: article.content?.length > 80
+      ? article.content.slice(0, 50) + ' ...'
+      : article.content || FALLBACK_DESC,
+    date: formatDate(article.createdAt) || '---',
+    viewCount: article.viewCount ?? 0
   }
 }

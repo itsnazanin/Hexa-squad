@@ -57,7 +57,7 @@ const CoursesPart = ({
 
 
   return (
-    <div className='max-w-[1440px] h-fit mx-auto'>
+    <div className='max-w-[1440px] h-fit mx-2'>
       {/* top part */}
       <div className='w-full h-14 flex gap-3'>
         <div className='flex gap-2 items-center bg-[#ECEFF1] rounded-2xl px-2'>
@@ -108,10 +108,10 @@ const CoursesPart = ({
 
       {/* bottom part */}
       <div className={layout === 'grid' 
-       ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pt-5' 
+       ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-[1005px] pt-5' 
        : 'flex flex-col'}>
         {courses.map((course) => (
-          <CourseCard key={course.courseId} course={course} layout={layout} />
+          <CourseCard key={course.id} course={course} layout={layout} />
         ))}
       </div>
       <CoursePagination pageNumber={pageNumber} totalPages={totalPages} setPageNumber={setPageNumber} />

@@ -14,10 +14,11 @@ const LikeButton = ({data}) => {
 
 
   return (
-    <div className='flex items-center gap-1.5 rounded-3xl py-1 px-2.5 bg-[#FFEBEE] text-[#F44336]'> 
+    <div className='flex items-center gap-1 rounded-3xl py-1 px-2.5 bg-[#FFEBEE] text-[#F44336]'> 
       {isLiked ? <img src={filledHeart} alt="liked" onClick={handleLike} />
        : <img src={heart} alt="not liked" onClick={handleLike} />}
       <span className='font-semibold pt-1'>{likeCount}</span>
+      <p className='text-[14px] text-center mt-1'>{data.favoriteCount}</p>
     </div>
   )
 }

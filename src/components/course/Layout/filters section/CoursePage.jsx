@@ -1,136 +1,176 @@
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import FiltersSidebar from "../../../../components/course/Layout/filters section/FiltersSidebar";
 import CoursePart from "../../../../components/course/Layout/courses sections/CoursesPart";
-import { useCourses } from "../../../../hooks/useCourses";
-import { useTeachers } from "../../../../hooks/useTeachers";
+
+import { useCourses } from "@/features/courses/hooks/useCourses";
+import { useTeachers } from "@/features/courses/hooks/useTeachers";
 
 const CoursePage = () => {
+  const rowsOfPage = 8;
+
+  const [pageNumber, setPageNumber] = useState(1);
 
   const [sort, setSort] = useState({
     sortingCol: "",
     sortType: "",
   });
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const rowsOfPage = 8;
-
   const [filters, setFilters] = useState({
     price: [1500, 6000],
-    type: { free: false, paid: false },
+    type: {
+      free: false,
+      paid: false,
+    },
     teachers: [],
     search: "",
   });
 
-  const { data: coursesData } = useCourses({
-    pageNumber,
-    rows: rowsOfPage,
-    sortingCol: sort.sortingCol,
-    sortType: sort.sortType,
-  });
+  /*
+   * Convert frontend filters
+   * to backend query parameters
+   */
+  const courseParams = useMemo(() => {
+    let priceType;
 
-  const { data: teachersData } = useTeachers();
-
-  const courses = useMemo(
-    () => coursesData?.courseFilterDtos ?? [],
-    [coursesData]
-  );
-
-  const totalPages = useMemo(() => {
-    if (!coursesData) return 1;
-    const totalCount = coursesData.totalCount ?? courses.length;
-    return Math.max(1, Math.ceil(totalCount / rowsOfPage));
-  }, [coursesData, courses.length, rowsOfPage]);
-
-  const teachers = useMemo(
-    () =>
-      teachersData?.map((t) => ({
-        id: t.teacherId,
-        name: t.fullName,
-        image: t.pictureAddress,
-      })) ?? [],
-    [teachersData]
-  );
-
-
-  const prices = courses.map((c) => c.cost ?? 0);
-  const minPrice = prices.length ? Math.min(...prices) : 1500;
-  const maxPrice = prices.length ? Math.max(...prices) : 6000;
-
-  useEffect(() => {
-    setFilters((prev) => ({
-      ...prev,
-      price: [minPrice, maxPrice],
-    }));
-  }, [minPrice, maxPrice]);
-
-  useEffect(() => {
-  setPageNumber(1);
-}, [
-  filters.search,
-  filters.type.free,
-  filters.type.paid,
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  filters.teachers.join(','),
-  sort.sortingCol,
-  sort.sortType
-]);
-
-
-  const filteredCourses = useMemo(() => {
-    return courses.filter((course) => {
-      const priceMatch =
-        course.cost >= filters.price[0] &&
-        course.cost <= filters.price[1];
-
-      const typeMatch =
-        (!filters.type.free && !filters.type.paid) ||
-        (filters.type.free && course.cost === 0) ||
-        (filters.type.paid && course.cost > 0);
-
-      const teacherMatch =
-        filters.teachers.length === 0 ||
-        filters.teachers.includes(course.teacherId);
-
-      const searchMatch =
-        filters.search.trim() === "" ||
-        course.title
-          .toLowerCase()
-          .includes(filters.search.trim().toLowerCase());
-
-      return priceMatch && typeMatch && teacherMatch && searchMatch;
-    });
-  }, [courses, filters]);
-
-
-  useEffect(() => {
-    if (filteredCourses.length === 0 && pageNumber > 1) { 
-      setPageNumber(1);
+    if (filters.type.free && !filters.type.paid) {
+      priceType = "FREE";
     }
-  }, [filteredCourses.length, pageNumber]);
+
+    if (filters.type.paid && !filters.type.free) {
+      priceType = "PAID";
+    }
+
+    return {
+      page: pageNumber,
+      limit: rowsOfPage,
+
+      search: filters.search.trim() || undefined,
+
+      teacherId:
+        filters.teachers.length > 0
+          ? filters.teachers[0]
+          : undefined,
+
+      priceType,
+
+      sortBy: sort.sortingCol || undefined,
+      sortOrder: sort.sortType || undefined,
+    };
+  },[
+    pageNumber,
+    filters,
+    sort,
+  ]);
+
+  /*
+   * Courses from backend
+   */
+  const {
+    data: coursesData,
+    isLoading: coursesLoading,
+    isError: coursesError,
+    error: coursesErrorData,
+  } = useCourses(courseParams);
 
 
+console.log("COURSES DATA:", coursesData);
+console.log("COURSE PARAMS:", courseParams);
+
+  /*
+   * Teachers from backend
+   */
+  const {
+    data: teachersData,
+    isLoading: teachersLoading,
+  } = useTeachers()
+
+  const courses = coursesData?.result?.courses ?? []
+
+  const totalPages = coursesData?.result?.pagination?.totalPages ?? 1
+
+  /*
+   * Convert teacher API data
+   * to the shape expected by FiltersSidebar
+   */
+  const teachers = useMemo(() => {
+    return (
+      teachersData?.teachers.map((teacher) => ({
+        id: teacher.id,
+        name: teacher.name,
+        image: teacher.avatar,
+      })) ?? []
+    );
+  }, [teachersData]);
+
+  /*
+   * Reset page when filters or sorting change
+   */
+  useEffect(() => {
+    setPageNumber(1);
+  }, [
+    filters.search,
+    filters.price,
+    filters.type.free,
+    filters.type.paid,
+    filters.teachers,
+    sort.sortingCol,
+    sort.sortType,
+  ]);
+
+  /*
+   * Reset filters
+   */
   const resetFilters = () => {
     setFilters({
-      price: [minPrice, maxPrice],
-      type: { free: false, paid: false },
+      price: [1500, 6000],
+      type: {
+        free: false,
+        paid: false,
+      },
       teachers: [],
       search: "",
     });
+
+    setSort({
+      sortingCol: "",
+      sortType: "",
+    });
+
+    setPageNumber(1);
   };
 
+  /*
+   * Loading
+   */
+  if (coursesLoading || teachersLoading) {
+    return <div>در حال بارگذاری ...</div>;
+  }
+
+  /*
+   * Error
+   */
+  if (coursesError) {
+    return (
+      <div>
+        {coursesErrorData?.message || "خطایی رخ داده است"}
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-[1440px] flex gap-8 px-6 py-6">
+    <div className="max-w-[1440px] flex gap-8 py-6">
       <FiltersSidebar
         filters={filters}
         setFilters={setFilters}
         teachers={teachers}
-        minPrice={minPrice}
-        maxPrice={maxPrice}
+        minPrice={1500}
+        maxPrice={6000}
         reset={resetFilters}
       />
 
       <CoursePart
-        courses={filteredCourses}
+        courses={courses}
         filters={filters}
         setFilters={setFilters}
         sort={sort}

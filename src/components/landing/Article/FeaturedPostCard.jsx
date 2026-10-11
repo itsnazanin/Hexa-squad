@@ -6,8 +6,8 @@ const FeaturedPostCard = ({ title, image, date, viewCount, describe }) => {
   const safeDescribe = typeof describe === 'string' ? describe : ''
 
   return (
-    <div className='flex flex-col w-fit relative right-[130px] gap-6 pt-10'>
-        <div>
+    <div className='flex flex-col w-fit mr-10 gap-6 pt-10'>
+        <div className='shadow-md rounded-2xl'>
             <img className='rounded-3xl' src={image} alt={title} />
         </div>
         <div className='text-[#2196F3] flex gap-4'>
