@@ -17,7 +17,7 @@ const CoursePage = () => {
   });
 
   const [filters, setFilters] = useState({
-    price: [1500, 6000],
+    price: null,
     type: {
       free: false,
       paid: false,
@@ -27,67 +27,12 @@ const CoursePage = () => {
   });
 
   /*
-   * Convert frontend filters
-   * to backend query parameters
-   */
-  const courseParams = useMemo(() => {
-    let priceType;
-
-    if (filters.type.free && !filters.type.paid) {
-      priceType = "FREE";
-    }
-
-    if (filters.type.paid && !filters.type.free) {
-      priceType = "PAID";
-    }
-
-    return {
-      page: pageNumber,
-      limit: rowsOfPage,
-
-      search: filters.search.trim() || undefined,
-
-      teacherId:
-        filters.teachers.length > 0
-          ? filters.teachers[0]
-          : undefined,
-
-      priceType,
-
-      sortBy: sort.sortingCol || undefined,
-      sortOrder: sort.sortType || undefined,
-    };
-  },[
-    pageNumber,
-    filters,
-    sort,
-  ]);
-
-  /*
-   * Courses from backend
-   */
-  const {
-    data: coursesData,
-    isLoading: coursesLoading,
-    isError: coursesError,
-    error: coursesErrorData,
-  } = useCourses(courseParams);
-
-
-console.log("COURSES DATA:", coursesData);
-console.log("COURSE PARAMS:", courseParams);
-
-  /*
    * Teachers from backend
    */
   const {
     data: teachersData,
     isLoading: teachersLoading,
-  } = useTeachers()
-
-  const courses = coursesData?.result?.courses ?? []
-
-  const totalPages = coursesData?.result?.pagination?.totalPages ?? 1
+  } = useTeachers();
 
   /*
    * Convert teacher API data
@@ -102,6 +47,52 @@ console.log("COURSE PARAMS:", courseParams);
       })) ?? []
     );
   }, [teachersData]);
+
+
+  const courseParams = useMemo(() => {
+  
+  return {
+    page: pageNumber,
+    limit: rowsOfPage,
+    minPrice: filters.price?.[0],
+    maxPrice: filters.price?.[1],
+    sortBy: sort.sortingCol || undefined,
+    sortOrder: sort.sortType || undefined
+  };
+}, [pageNumber, filters, sort]);
+
+const {
+  data: coursesData,
+  isLoading: coursesLoading,
+  isError: coursesError,
+  error: coursesErrorData,
+} = useCourses(courseParams);
+
+console.log("courseParams:", courseParams);
+console.log("coursesData:", coursesData);
+console.log("coursesError:", coursesErrorData);
+
+
+  /*
+   * Actual price range returned by backend
+   */
+  const priceRangeData = coursesData?.result?.priceRange;
+
+  const minPrice = priceRangeData?.min ?? 0;
+  const maxPrice = priceRangeData?.max ?? 0;
+
+  /*
+   * Initialize price filter from backend range.
+   * Do not overwrite a range already chosen by the user.
+   */
+useEffect(() => {
+  if (!priceRangeData || filters.price !== null) return;
+
+  setFilters((prev) => ({
+    ...prev,
+    price: [minPrice, maxPrice],
+  }));
+}, [priceRangeData, minPrice, maxPrice, filters.price]);
 
   /*
    * Reset page when filters or sorting change
@@ -123,7 +114,7 @@ console.log("COURSE PARAMS:", courseParams);
    */
   const resetFilters = () => {
     setFilters({
-      price: [1500, 6000],
+      price: [minPrice, maxPrice],
       type: {
         free: false,
         paid: false,
@@ -141,9 +132,17 @@ console.log("COURSE PARAMS:", courseParams);
   };
 
   /*
+   * Data for rendering
+   */
+  const courses = coursesData?.result?.courses ?? [];
+
+  const totalPages =
+    coursesData?.result?.pagination?.totalPages ?? 1;
+
+  /*
    * Loading
    */
-  if (coursesLoading || teachersLoading) {
+  if (coursesLoading || teachersLoading || filters.price === null) {
     return <div>در حال بارگذاری ...</div>;
   }
 
@@ -164,8 +163,8 @@ console.log("COURSE PARAMS:", courseParams);
         filters={filters}
         setFilters={setFilters}
         teachers={teachers}
-        minPrice={1500}
-        maxPrice={6000}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
         reset={resetFilters}
       />
 
@@ -183,4 +182,4 @@ console.log("COURSE PARAMS:", courseParams);
   );
 };
 
-export default CoursePage;
+export default CoursePage

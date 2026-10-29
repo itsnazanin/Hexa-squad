@@ -12,9 +12,11 @@ i18n
         resources: {
             fa: {
                 translation: fa,
+                auth: fa
             },
             en: {
                 translation: en,
+                auth: en
             },
         },
 

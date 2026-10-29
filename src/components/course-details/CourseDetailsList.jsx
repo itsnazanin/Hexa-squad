@@ -1,12 +1,14 @@
-import React from 'react'
 import userprofile from '../../assets/icons/userprofiles.svg'
 import monitor from '../../assets/icons/monitor.svg'
 import calendar from '../../assets/icons/calendar-2.svg'
 import calendarTick from '../../assets/icons/calendar-tick.svg'
 import teacherIcon from '../../assets/icons/education.svg'
-import teacherpic from '../../assets/images/teacherpic.jpg'
 
-const CourseDetailsList = () => {
+
+const CourseDetailsList = ( course ) => {
+
+  const teacherInfo = course?.teacher
+
   return (
     <>
     <div className=' bg-[#FFFFFF] drop-shadow-sm px-8 rounded-3xl flex flex-col'>
@@ -32,7 +34,7 @@ const CourseDetailsList = () => {
             <p className='text-[#455A64] pr-3'> وضعیت دوره</p>    
           </div>
 
-            <p className='font-semibold'>در حال بارگزاری</p>
+            <p className='font-semibold'>{course.status}</p>
         </div>
         <hr className='bg-[#ECEFF1] my-4' />
 
@@ -44,7 +46,7 @@ const CourseDetailsList = () => {
             <p className='text-[#455A64] pr-3'> تاریخ شروع</p>    
           </div>
 
-            <p className='font-semibold'>24 فروردین 1403 </p>
+            <p className='font-semibold'>{course.startDate}</p>
         </div>
         <hr className='bg-[#ECEFF1] my-4' />
 
@@ -56,14 +58,14 @@ const CourseDetailsList = () => {
             <p className='text-[#455A64] pr-3'> تاریخ پایان</p>    
           </div>
 
-            <p className='font-semibold'>24 فروردین 1403 </p>
+            <p className='font-semibold'>{course.endDate}</p>
         </div>
         <hr className='bg-[#ECEFF1] my-4' />
 
         <div className='flex justify-between items-center py-8'>
           <button className='bg-[#2196F3] font-semibold py-4 px-6 rounded-full text-white'>شرکت در دوره</button>
           <span className='flex items-center gap-2'>
-            <p className='text-[#2196F3] text-2xl font-semibold'>500,000</p>
+            <p className='text-[#2196F3] text-2xl font-semibold'>{course.price}</p>
             <p className='text-[#263238]'>تومان</p>
           </span>
         </div>
@@ -72,7 +74,7 @@ const CourseDetailsList = () => {
 
     <div className='w-full rounded-3xl mt-8 drop-shadow-md bg-[#ffffff] flex gap-4 items-center py-6 px-6'>
             <div className='w-16 flex object-cover'>
-              <img className='rounded-2xl' src={teacherpic} alt="teacher image" />
+              <img className='rounded-2xl' src={teacherInfo.avatar} alt="teacher image" />
             </div>
             
           
@@ -81,9 +83,9 @@ const CourseDetailsList = () => {
               <span>
               <img src={teacherIcon} alt="teacher icon" />
               </span>
-              <p className='font-semibold'>استاد بحرالعلوم</p>
+              <p className='font-semibold'>{teacherInfo.name}</p>
            </div>
-           <p className='text-[#455A64]'>برنامه نویسی تحت فرانت اند و بک اند</p>
+           <p className='text-[#455A64]'>{teacherInfo.bio}</p>
             
           </div>
         </div>

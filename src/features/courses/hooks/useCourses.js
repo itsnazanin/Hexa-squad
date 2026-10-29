@@ -5,6 +5,7 @@ export const useCourses = (params = {}) => {
 
   return useQuery({
     queryKey: ["courses",params],
-    queryFn: async () =>  getCourseApi(params) 
+    queryFn: async () =>  getCourseApi(params),
+    placeholderData: (previousData) => previousData,
   });
 };

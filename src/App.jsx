@@ -4,19 +4,25 @@ import Navbar from './components/header/Navbar';
 import AppRoutes from './routes/AppRoutes';
 import Footer from './components/footer/Footer';
 import LanguageManager from './core/components/LanguageManager';
+import AuthFlow from './components/Auth/AuthFlow';
+import { AuthModalProvider } from './components/Auth/AuthModalContext';
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <LanguageManager />
-      <ErrorBoundary>
+      
+      <AuthModalProvider>
+        <LanguageManager />
+        <ErrorBoundary>
         <Navbar />
+        <AuthFlow />
         <AppRoutes />
         <Footer />
-      </ErrorBoundary>  
-      
+        </ErrorBoundary>
+      </AuthModalProvider>
+        
     </QueryClientProvider>
   )
 }

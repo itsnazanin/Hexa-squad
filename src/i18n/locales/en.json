@@ -1,8 +1,5 @@
 {
   "common": {
-    "login": "Login",
-    "register": "Register",
-    "logout": "Logout",
     "home": "Home",
     "courses": "Courses",
     "blogs": "Blogs",
@@ -11,5 +8,42 @@
     "error": "Something went wrong",
     "save": "Save",
     "cancel": "Cancel"
-  }
+  },
+
+   "login": {
+        "title": "Log in",
+        "footerText": "Don't have an account?",
+        "footerAction": "Sign up",
+        "buttonText": "recieve verify code"
+        
+    },
+    "loginVerifyCode": {
+        "title": "Verify your code",
+        "footerText": "Didn't recieve the code?",
+        "footerAction": "resend-code",
+        "buttonText": "login to account"
+    },
+    "register": {
+        "title": "Create an account",
+        "footerText": "Already have an account?",
+        "footerAction": "Log in",
+        "buttonText": "recieve verify code"
+    },
+    "registerVerifyCode": {
+        "title": "Verify your code",
+        "footerText": "Didn't recieve the code?",
+        "footerAction": "resend-code",
+        "buttonText": "create user account"
+    },
+    "finishRegister": {
+        "title": "Log in to your account",
+        "footerText": "",
+        "footerAction": "",
+        "buttonText": "recieve verify code"
+    },
+    "loginVerifyCode": {
+       "message": "The code has been sent to {{phone}} if it is incorrect ",
+       "change": "please change it"
+    }
+
 }

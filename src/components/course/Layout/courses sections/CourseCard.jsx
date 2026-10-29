@@ -5,6 +5,7 @@ import calendarIcon from "../../../../assets/images/calendar.svg";
 import teacherIcon from "../../../../assets/icons/teacher.svg";
 import userIcon from "../../../../assets/icons/userprofile.svg";
 import LikeButton from "../../../../components/LikeButton";
+import { Link } from "react-router-dom";
 
 const CourseCard = ({ course, layout }) => {
 
@@ -16,8 +17,8 @@ const CourseCard = ({ course, layout }) => {
     <div
       className={
         layout === "list"
-          ? "flex flex-row gap-5 w-full items-center cursor-pointer bg-[#ffffff] rounded-3xl shadow-md px-6 py-6 mt-4"
-          : "flex flex-col w-fit bg-[#ffffff] h-fit rounded-3xl shadow-md px-3 py-4 gap-4 cursor-pointer"
+          ? "flex flex-row gap-5 w-full items-center bg-[#ffffff] rounded-3xl shadow-md px-6 py-6 mt-4"
+          : "flex flex-col w-fit bg-[#ffffff] h-fit rounded-3xl shadow-md px-3 py-4 gap-4"
       }
     >
       {/* Image */}
@@ -35,9 +36,12 @@ const CourseCard = ({ course, layout }) => {
 
       <div>
         {/* Title */}
-        <h3 className="text-[18px] font-bold mb-2">
-          {course.title}
-        </h3>
+        <Link>
+          <h3 className="text-[18px] font-bold mb-2">
+            {course.title}
+          </h3>
+        </Link>
+        
 
         {layout === "list" ? (
           <div>

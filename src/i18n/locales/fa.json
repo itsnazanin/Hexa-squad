@@ -1,8 +1,5 @@
 {
     "common": {
-        "login": "ورود",
-        "register": "ثبت نام",
-        "logout":"خروج",
         "home":"خانه",
         "courses":"دوره ها",
         "blogs":"مقالات",
@@ -11,5 +8,41 @@
         "error":"خطایی رخ داده است",
         "save":"ذخیره",
         "cancel":"لغو"
+    },
+
+    "login": {
+        "title": "ورود به حساب",
+        "footerText": "حساب کاربری ندارید؟",
+        "footerAction": "ثبت نام",
+        "buttonText": "دریافت کد تایید"
+    },
+    "loginVerifyCode": {
+        "title": "کد تاییدیه",
+        "footerText": "کد ارسال نشد؟",
+        "footerAction": "ارسال دوباره",
+        "buttonText": "ورود به حساب"
+    },
+    "register": {
+        "title": "ساخت حساب کاربری",
+        "footerText": "حساب کاربری دارید؟",
+        "footerAction": "وارد شوید",
+        "buttonText": "دریافت کد تایید"
+    },
+    "registerVerifyCode": {
+        "title": "کد تاییدیه",
+        "footerText": "کد ارسال نشد؟",
+        "footerAction": "ارسال دوباره",
+        "buttonText": "ساخت حساب کاربری"
+    },
+    "finishRegister": {
+        "title": "ورود به حساب",
+        "footerText": "",
+        "footerAction": "",
+        "buttonText": "دریافت کد تایید"
+    },
+    "loginVerifyCode": {
+      "message":  "کد به شماره {{phone}} ارسال شد، در صورت اشتباه بودن آن را",
+      "change": "تغییر دهید"  
     }
+    
 }

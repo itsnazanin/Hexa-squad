@@ -40,19 +40,25 @@ const CoursesPart = ({
   }
 
     const handleSortChange = (value) => {
-    if (value === 'popular') {
-      setSort({
-        sortingCol: 'active',
-        sortType: 'desc',
-      });
-    }
-
     if (value === 'all') {
       setSort({
         sortingCol: '',
         sortType: '',
       });
+      return
     }
+
+    const sortOrders = {
+      popular: "desc",
+      newest: "desc",
+      cheapest: "asc",
+      expensive: "desc",
+    }
+
+    setSort({
+      sortingCol: value,
+      sortType: sortOrders[value]
+    })
   };
 
 
@@ -62,17 +68,17 @@ const CoursesPart = ({
       <div className='w-full h-14 flex gap-3'>
         <div className='flex gap-2 items-center bg-[#ECEFF1] rounded-2xl px-2'>
            <div onClick={() => setLayout('grid')} 
-           variant={layout === 'grid' ? 'default' : 'outline'}
-           className={`w-10 h-10 flex items-center justify-center rounded-xl cursor-pointer transition
-           ${layout === 'grid' ? 'bg-white shadow' : 'hover:bg-white/60'}
-           `}>
+            variant={layout === 'grid' ? 'default' : 'outline'}
+            className={`w-10 h-10 flex items-center justify-center rounded-xl cursor-pointer transition
+            ${layout === 'grid' ? 'bg-white shadow' : 'hover:bg-white/60'}
+            `}>
            <img src={gridIcon} alt="grid icon" /> 
           </div>
           <div onClick={() => setLayout('list')} 
-          variant={layout === 'list' ? 'default' : 'outline'}
-          className={`w-10 h-10 flex items-center justify-center rounded-xl cursor-pointer transition
-          ${layout === 'list' ? 'bg-white shadow' : 'hover:bg-white/60'}
-          `}>
+            variant={layout === 'list' ? 'default' : 'outline'}
+            className={`w-10 h-10 flex items-center justify-center rounded-xl cursor-pointer transition
+            ${layout === 'list' ? 'bg-white shadow' : 'hover:bg-white/60'}
+            `}>
             <img src={listIcon} alt="list icon" />
           </div>
         </div>
@@ -90,7 +96,7 @@ const CoursesPart = ({
         </div>
 
         <div className='w-[25%]'>
-            <Select onValueChange={handleSortChange} value={sort.sortingCol ? 'popular' : 'all'}>
+            <Select onValueChange={handleSortChange} value={sort.sortingCol || 'all'}>
               <SelectTrigger>
                 <SelectValue placeholder="مرتب‌سازی" />
               </SelectTrigger>
@@ -98,6 +104,9 @@ const CoursesPart = ({
               <SelectContent>
                 <SelectItem value="all">نمایش همه</SelectItem>
                 <SelectItem value="popular">محبوب‌ترین</SelectItem>
+                <SelectItem value="newest">جدیدترین</SelectItem>
+                <SelectItem value="cheapest">ارزان ترین</SelectItem>
+                <SelectItem value="expensive">گران ترین</SelectItem>
               </SelectContent>
             </Select>
         </div>

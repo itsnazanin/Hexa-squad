@@ -1,8 +1,12 @@
 import logo from '../../assets/icons/logo.png'
 import { Link, NavLink } from 'react-router-dom'
 import shoppingBag from '../../assets/icons/shopping-bag.png'
+import { useAuthModal } from '../Auth/AuthModalContext'; 
 
 const Navbar = () => {
+
+  const { openAuthModal } = useAuthModal()
+
   return (
     <div className='max-w-[1200px] mx-auto'> 
       <div className="w-full absolute top-0 flex justify-around items-center pt-8 px-4 bg-transparent max-w-[1200px]">
@@ -41,9 +45,9 @@ const Navbar = () => {
           </div>
 
           {/* Login */}
-          <Link to="/login">
-             <p className="px-4 py-3  md:px-6 md:py-3 md:text-sm sm:text-xs whitespace-nowrap lg:text-base rounded-full bg-[#2196F3] text-white shadow-sm font-bold cursor-pointer">ورود به حساب</p>
-          </Link>
+           <button onClick={() => openAuthModal("register")} className="px-4 py-3  md:px-6 md:py-3 md:text-sm sm:text-xs whitespace-nowrap lg:text-base rounded-full bg-[#2196F3] text-white shadow-sm font-bold cursor-pointer">
+             ورود به حساب
+          </button>
         </div>
       </div>
     </div>

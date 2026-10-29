@@ -9,6 +9,16 @@ export const loginApi = async (data) => {
     return response.data
 }
 
+export const verifyLoginApi = async (data) => {
+    const response = await apiClient.post("/auth/login/verify" , data)
+    return response.data
+}
+
+export const resendLoginApi = async (data) => {
+    const response = await apiClient.post("/auth/login/resend/" , data)
+    return response.data
+}
+
 export const registerApi = async (data) => {
     const response = await apiClient.post(
         "/auth/register",
