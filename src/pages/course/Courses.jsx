@@ -1,5 +1,4 @@
-import React from 'react'
-import CourseTopSection from '../components/course/CourseTopSection'
+import CourseTopSection from '@/components/course/CourseTopSection'
 import CoursePage from '@/components/course/Layout/filters section/CoursePage'
 
 const Courses = () => {

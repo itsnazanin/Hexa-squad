@@ -12,7 +12,7 @@ const formatDuration = (minutes) => {
   return `${hours} hrs ${remainingMinutes} mins`;
 };
 
-const CoursePreview = ( sections ) => {
+const CoursePreview = ({sections}) => {
   const [openSectionIds, setOpenSectionIds] = useState([]);
 
   const toggleSection = (sectionId) => {
@@ -60,8 +60,8 @@ const CoursePreview = ( sections ) => {
                 </span>
               </span>
 
-              <span className="flex shrink-0 items-center gap-1 text-xs">
-                <span>◷</span>
+              <span className="flex shrink-0 items-center gap-1.5 text-xs">
+                <span className="text-[16px]">◷</span>
                 {formatDuration(totalDuration)}
               </span>
             </button>
@@ -76,15 +76,15 @@ const CoursePreview = ( sections ) => {
                       className="flex items-center justify-between gap-3 rounded-lg bg-[#ECEFF1] px-3 py-3 text-sm text-[#455A64] sm:px-4"
                     >
                       <div className="flex min-w-0 items-center gap-2">
-                        <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[#2196F3] text-xs text-white">
+                        <span className="flex size-6 shrink-0 text-center items-center justify-center rounded-full bg-[#2196F3] text-[14px] text-white">
                           {lesson.order}
                         </span>
 
                         <span>{lesson.title}</span>
                       </div>
 
-                      <span className="flex shrink-0 items-center gap-1 text-xs">
-                        <span>◷</span>
+                      <span className="flex shrink-0 items-center gap-1.5 text-xs">
+                        <span className="text-[16px]">◷</span>
                         {formatDuration(lesson.duration)}
                       </span>
                     </div>

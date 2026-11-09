@@ -1,5 +1,5 @@
 import { formatDate } from '@/core/utils/formatDate';
-import BlogCard from './BlogCard'
+import BlogCard from '@/components/Blogs/items/BlogCard'
 
 const BlogsGrid = ({ data = [] , isError, isLoading }) => {
 
@@ -15,10 +15,11 @@ const BlogsGrid = ({ data = [] , isError, isLoading }) => {
         return <p className="text-sm text-gray-500">مقاله ای یافت نشد</p>;
     }
   return (
-    <div className="max-w-[90%] mx-auto pr-14 pt-8 space-y-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="w-full items-center pt-8 space-y-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {data.map(item => (
         <BlogCard
           key={item.id}
+          id={item.id}
           image={item.coverImage}
           title={item.title}
           description={item.shortDescription}

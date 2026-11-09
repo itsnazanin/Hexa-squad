@@ -1,6 +1,5 @@
-import BlogBottomSection from '@/components/Blogs/BlogBottomSection'
-import BlogsTopSection from '@/components/Blogs/BlogsTopSection'
-import React from 'react'
+import BlogBottomSection from '@/components/Blogs/items/BlogBottomSection'
+import BlogsTopSection from '@/components/Blogs/items/BlogsTopSection'
 
 const Blogs = () => {
   return (

@@ -50,3 +50,17 @@ export const removeFavoriteApi = async (courseId) => {
 
     return response.data
 }
+
+export const getCourseCommentsApi = async (courseId) => {
+    const response = await apiClient.get(
+        `/courses/${courseId}/comments`
+    )
+
+    return response.data
+}
+
+export const createCourseCommentApi = (courseId , content) => {
+    return apiClient.post(`/courses/${courseId}/comments`, {
+        content
+    })
+}

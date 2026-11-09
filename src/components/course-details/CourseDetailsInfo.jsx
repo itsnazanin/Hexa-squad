@@ -3,7 +3,7 @@ import rating from '../../assets/images/Stars.png'
 import like from '../../assets/icons/like.svg'
 import dislike from '../../assets/icons/dislike.svg'
 
-const CourseDetailsInfo = ({ course }) => {
+const CourseDetailsInfo = ({ course , onWriteComment }) => {
   return (
     <div className='flex flex-col gap-4'>
 
@@ -15,7 +15,7 @@ const CourseDetailsInfo = ({ course }) => {
             <div className='flex items-center gap-4'>
               <img className='w-[110px]' src={rating} alt="rating" />
               <p className='text-[#263238]'>امتیاز 20 نفر</p> 
-              <button className='bg-[#2196F3] py-2.5 px-4 text-sm rounded-full text-white'>ثبت دیدگاه</button>      
+              <button onClick={onWriteComment} className='bg-[#2196F3] py-2.5 px-4 text-sm rounded-full text-white'>ثبت دیدگاه</button>      
             </div>
 
             <div className='w-fit flex items-center gap-3'>

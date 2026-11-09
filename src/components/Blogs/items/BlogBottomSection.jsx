@@ -1,9 +1,8 @@
-import React from 'react'
-import SerachBox from './SerachBox'
-import FiltersTabs from './FiltersTabs'
+import SerachBox from '@/components/Blogs/features/SerachBox'
+import FiltersTabs from '@/components/Blogs/features/FiltersTabs'
 import { useState } from 'react'
-import BlogsGrid from './BlogsGrid'
-import BlogsPagination from './BlogsPagination'
+import BlogsGrid from '@/components/Blogs/items/BlogsGrid'
+import BlogsPagination from '@/components/Blogs/features/BlogsPagination'
 import { useBlogs } from '@/features/courses/hooks/useBlogs'
 
 

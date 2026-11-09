@@ -1,8 +1,7 @@
-import React from 'react'
-import blogImg from '../../assets/images/objects.png'
-import dotImg from '../../assets/images/Dot.png'
-import dotsImg from '../../assets/images/dots.png'
-import circleImg from '../../assets/images/circle.png'
+import blogImg from '@/assets/images/objects.png'
+import dotImg from '@/assets/images/Dot.png'
+import dotsImg from '@/assets/images/dots.png'
+import circleImg from '@/assets/images/circle.png'
 
 const BlogsTopSection = () => {
   return (

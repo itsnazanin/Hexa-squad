@@ -36,7 +36,7 @@ const CourseCard = ({ course, layout }) => {
 
       <div>
         {/* Title */}
-        <Link>
+        <Link to={`/courses/${course.id}`}>
           <h3 className="text-[18px] font-bold mb-2">
             {course.title}
           </h3>

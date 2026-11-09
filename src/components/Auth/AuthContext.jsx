@@ -1,17 +1,7 @@
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-import {
-  getProfileApi,
-  loginApi,
-  verifyLoginApi,
-  registerApi,
-} from "@/core/services/api/auth.api";
+import { getProfileApi, loginApi, verifyLoginApi, registerApi } from "@/core/services/api/auth.api";
 
 const AuthContext = createContext(null);
 
@@ -32,7 +22,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await getProfileApi();
 
-      // ساختار پاسخ باید با کنترلر بک‌اند هماهنگ باشد.
       const profile = result.userProfileData;
 
       if (!profile) {
@@ -49,12 +38,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (data) => {
-    // بررسی رمز عبور و درخواست OTP
     return await loginApi(data);
   };
 
   const verifyLogin = async (data) => {
-    // تأیید OTP و دریافت توکن
+
     const result = await verifyLoginApi(data);
 
     if (!result.accessToken) {
@@ -63,14 +51,13 @@ export const AuthProvider = ({ children }) => {
 
     localStorage.setItem("accessToken", result.accessToken);
 
-    // دریافت پروفایل کاربر پس از ورود
     await refreshProfile();
 
     return result;
   };
 
   const register = async (data) => {
-    // ثبت‌نام و دریافت توکن از بک‌اند
+
     const result = await registerApi(data);
 
     if (!result.accessToken) {
@@ -79,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
     localStorage.setItem("accessToken", result.accessToken);
 
-    // ورود خودکار پس از ثبت‌نام
+
     await refreshProfile();
 
     return result;
@@ -95,8 +82,7 @@ export const AuthProvider = ({ children }) => {
       try {
         await refreshProfile();
       } catch {
-        // توکن نامعتبر است یا دریافت پروفایل شکست خورده.
-        // refreshProfile وضعیت کاربر و توکن را پاک می‌کند.
+        // 
       } finally {
         setLoading(false);
       }
