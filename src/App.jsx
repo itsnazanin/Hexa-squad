@@ -19,10 +19,8 @@ function App() {
           <LanguageManager />
 
           <ErrorBoundary>
-            <Navbar />
             <AuthFlow />
             <AppRoutes />
-            <Footer />
           </ErrorBoundary>
         </AuthModalProvider>
       </AuthProvider>

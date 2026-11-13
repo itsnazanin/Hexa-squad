@@ -1,4 +1,3 @@
-import herobg from '../../assets/images/header-bg.png';
 import react from '../../assets/images/React.png';
 import angular from '../../assets/images/Angular.png';
 import html from '../../assets/images/Html.png';
@@ -16,11 +15,7 @@ import figma from "../../assets/images/Figma.png";
 const HeroSection = () => {
   return (
     <section 
-      className="w-screen h-[900px] pt-[100px] bg-no-repeat"
-      style={{
-        backgroundImage: `url(${herobg})`,
-        backgroundPosition: 'center top',     
-      }}
+      className="w-screen h-[780px] pt-[100px] bg-gradient-to-t from-[#E3F2FD]"
     >
       <div className='flex items-center justify-center max-w-[1440px] mx-auto lg:pl-[140px] md:pl-[40px]'>
             {/* tech icons 1 */}

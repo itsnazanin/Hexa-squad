@@ -17,19 +17,19 @@ const Services = () => {
             <div className='flex flex-col items-center justify-center px-8 py-10 rounded-3xl bg-[#FAFBFC] border border-[#ECEFF1] transition duration-300 cursor-pointer hover:shadow-lg hover:bg-white hover:border-none'>
              <img className='w-16 md:w-20' src={favoriteChart} alt="favorite chart" />
              <p className='font-bold pt-4 text-xl text-[#263238]'>سادگی خدمات</p>
-             <p className='text-[12px] pt-2 text-center'>سهولت دسترسی و دریافت  خدمات از همه ی نقاط کشور با کمترین تعرفه و بدون نیاز  مراجعه حضوری در کل فرایند ثبت </p>
+             <p className='text-[12px] pt-2 text-center leading-5 w-[90%]'>تجربه یادگیری آسان با دسترسی سریع به دوره‌ها و خدمات آموزشی</p>
             </div>
             {/* service 2 */}
             <div className='flex flex-col items-center justify-center px-8 py-10 rounded-3xl bg-[#FAFBFC] border border-[#ECEFF1] transition duration-300 cursor-pointer hover:shadow-lg hover:bg-white hover:border-none'>
               <img className='w-16 md:w-20' src={briefcase} alt="briefcase icon" />
-              <p className='font-bold pt-4 text-[20px] text-[#263238]'>فرصت شغلی</p> 
-              <p className='text-[12px] pt-2 text-center'>سهولت دسترسی و دریافت  خدمات از همه ی نقاط کشور با کمترین تعرفه و بدون نیاز  مراجعه حضوری در کل فرایند ثبت </p>     
+              <p className='font-bold pt-4 text-[20px] text-[rgb(38,50,56)]'>فرصت شغلی</p> 
+              <p className='text-[12px] pt-2 text-center w-[80%] leading-5'>با کسب مهارت‌های کاربردی، مسیر ورود به بازار کار و فرصت‌های شغلی را هموار کنید</p>     
             </div>
             {/* service 3 */}
              <div className='flex flex-col items-center justify-center px-8 py-10 rounded-3xl bg-[#FAFBFC] border border-[#ECEFF1] transition duration-300 cursor-pointer hover:shadow-lg hover:bg-white hover:border-none'>
               <img className='w-16 md:w-20' src={briefcase} alt="briefcase icon" />
                <p className='font-bold pt-4 text-[20px] text-[#263238]'>مدرک معتبر</p>
-               <p className='text-[10px] md:text-[12px] pt-2 text-center'>سهولت دسترسی و دریافت  خدمات از همه ی نقاط کشور با کمترین تعرفه و بدون نیاز  مراجعه حضوری در کل فرایند ثبت </p> 
+               <p className='text-[10px] md:text-[12px] pt-2 text-center w-[80%] leading-5'>با دریافت گواهینامه معتبر، مهارت‌ها و دستاوردهای آموزشی خود را به نمایش بگذارید</p> 
              </div>
           </div>
         

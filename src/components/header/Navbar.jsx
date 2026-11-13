@@ -52,7 +52,7 @@ const Navbar = () => {
             </li>
 
             <li>
-              <Link to="" className="no-underline text-inherit">
+              <Link to="/contact-us" className="no-underline text-inherit">
                 ارتباط با ما
               </Link>
             </li>
