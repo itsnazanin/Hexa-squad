@@ -18,8 +18,8 @@ const HeroSection = () => {
       className="w-screen h-[780px] pt-[100px] bg-gradient-to-t from-[#E3F2FD]"
     >
       <div className='flex items-center justify-center max-w-[1440px] mx-auto lg:pl-[140px] md:pl-[40px]'>
-            {/* tech icons 1 */}
-          <div className='hidden md:flex flex-col justify-center items-center md:px-[100px] lg:px-[150px] gap-16 pt-[118px] overflow-hidden'>
+           
+          <div className='hidden md:flex flex-col  justify-center items-center md:px-[100px] lg:px-[150px] gap-16 pt-[118px] overflow-hidden'>
               
               <div className='md:w-[52px] md:h-[45px] lg:w-[74px] lg:h-[64px]'>
                 <img src={react} alt="react pics" />
@@ -36,7 +36,7 @@ const HeroSection = () => {
               
           </div>
 
-          {/* hero section */}
+          
           <div className='flex flex-col items-center justify-center gap-12 relative right-8 md:pl-[100px] lg:pl-[159px]'>
 
             <div className='flex flex-col gap-4 md:gap-4 lg:gap-8 pt-12 pl-8 items-center text-[#263238]'>

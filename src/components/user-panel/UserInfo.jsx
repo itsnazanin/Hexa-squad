@@ -16,8 +16,11 @@ function UserInfo() {
         />
       </div>
       
+      <div className="text-center">
+        <h3 className="font-semibold text-[16px]">{user.name}</h3>
+        <p className="text-[#2e2e2ec7]">hexasquad@gmail.com</p>
+      </div>
 
-      <h3 className="font-semibold text-[16px]">{user.name}</h3>
 
       <hr  className="h-1 bg-[#fafeff]"/>
 
