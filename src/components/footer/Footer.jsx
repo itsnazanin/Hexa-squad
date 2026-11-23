@@ -9,7 +9,7 @@ import Instagram from '../../assets/icons/Instagram'
 
 const Footer = () => {
   return (
-    <div className='max-w-[1440px] mx-auto bg-[#252641] h-[553px] flex flex-col items-center'>
+    <div className='w-full bg-[#252641] h-[553px] flex flex-col items-center'>
        <div className='flex flex-col justify-center gap-10'>
           <div className='flex flex-col items-center gap-4 text-white'>
             <span className='flex items-center justify-center gap-2'>

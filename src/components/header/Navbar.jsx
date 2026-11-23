@@ -4,10 +4,11 @@ import shoppingBag from "@/assets/icons/shopping-bag.png";
 import { Link, NavLink } from "react-router-dom";
 import { useAuthModal } from "@/components/Auth/AuthModalContext";
 import { useCart } from "@/features/courses/hooks/useCart";
+import { useAuth } from "@/components/Auth/AuthContext";
 
 const Navbar = () => {
   const { openAuthModal } = useAuthModal();
-
+  const { user , isAuthenticated , loading } = useAuth();
   const { data, isLoading } = useCart();
 
   const cartCount = data?.cart?.items?.length ?? 0;
@@ -94,12 +95,24 @@ const Navbar = () => {
           </Link>
 
           {/* Login */}
-          <button
-            onClick={() => openAuthModal("register")}
-            className="px-4 py-3 md:px-6 md:py-3 md:text-sm sm:text-xs whitespace-nowrap lg:text-base rounded-full bg-[#2196F3] text-white shadow-sm font-bold cursor-pointer"
-          >
-            ورود به حساب
-          </button>
+          
+          {!loading && (
+            isAuthenticated ? (
+              <Link
+                to="/dashboard"
+                className="px-4 py-3 md:px-6 md:py-3 rounded-full bg-[#2196F3] text-white shadow-sm font-bold no-underline whitespace-nowrap"
+              >
+                {user?.name || "حساب کاربری"}
+              </Link>
+            ) : (
+              <button
+                onClick={() => openAuthModal("register")}
+                className="px-4 py-3 md:px-6 md:py-3 md:text-sm sm:text-xs whitespace-nowrap lg:text-base rounded-full bg-[#2196F3] text-white shadow-sm font-bold cursor-pointer"
+              >
+                ورود به حساب
+              </button>
+            )
+          )}
 
         </div>
       </div>

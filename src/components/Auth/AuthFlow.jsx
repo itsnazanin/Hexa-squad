@@ -1,19 +1,22 @@
 
 import { useState } from "react";
 
-import { useAuthModal } from "./AuthModalContext";
+import { useAuth } from "@/components/Auth/AuthContext";
+import { useAuthModal } from "@/components/Auth/AuthModalContext";
+import { resendLoginApi } from "@/core/services/api/auth.api";
+import { useNavigate } from "react-router-dom";
+
 import AuthModal from "./AuthModal";
 import LoginForm from "./LoginForm";
-import Verifection from "../../features/auth/components/Verifection";
-import FinishRegister from "./FinishRegister";
 import RegisterForm from "./RegisterForm";
+import FinishRegister from "./FinishRegister";
+import Verifection from "@/features/auth/components/Verifection";
 
-import { resendLoginApi } from "@/core/services/api/auth.api";
-import { useAuth } from "./AuthContext";
-
-const AuthFlow = () => {
+function AuthFlow() {
   const { step, switchStep, closeAuthModal } = useAuthModal();
-  const { login, verifyLogin, register } = useAuth();
+  const navigate = useNavigate()
+
+  const { login, verifyLogin, sendRegisterCode, verifyRegisterCode, completeRegister } = useAuth();
 
   const [loginData, setLoginData] = useState({
     phone: "",
@@ -22,11 +25,13 @@ const AuthFlow = () => {
 
   const [registerData, setRegisterData] = useState({
     phone: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
+  const [registrationToken, setRegistrationToken] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
 
   const [verificationData, setVerificationData] = useState({
@@ -37,189 +42,350 @@ const AuthFlow = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLoginChange = (field, value) => {
+
+
+  const handleCloseAuthModal = () => {
+    setLoginData({
+      phone: "",
+      password: "",
+    });
+
+    setRegisterData({
+      phone: "",
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+
+    setRegistrationToken("");
+    setVerificationCode("");
+
+    setVerificationData({
+      identifier: "",
+      method: "phone",
+    });
+
+    setError("");
+    closeAuthModal();
+  };
+
+
+
+  const handleLoginChange = (event) => {
+    const { name, value } = event.target;
+
     setLoginData((prev) => ({
       ...prev,
-      [field]: value,
+      [name]: value,
     }));
+
+    setError("");
   };
 
-  const handleRegisterChange = (field, value) => {
+  const handleRegisterChange = (event) => {
+    const { name, value } = event.target;
+
     setRegisterData((prev) => ({
       ...prev,
-      [field]: value,
+      [name]: value,
     }));
-  };
-
-  // تبدیل شماره موبایل یا ایمیل به payload مورد انتظار بک‌اند
-  const getLoginPayload = () => {
-    const identifier = loginData.phone.trim();
-
-    if (identifier.includes("@")) {
-      return {
-        email: identifier.toLowerCase(),
-        password: loginData.password,
-      };
-    }
-
-    return {
-      phone: identifier,
-      password: loginData.password,
-    };
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (isLoading) return;
 
     setError("");
-
-    try {
-      setIsLoading(true);
-
-      // مرحله اول ورود
-      if (step === "login") {
-        const result = await login(getLoginPayload());
-
-        if (result?.otpRequired) {
-          setVerificationData({
-            identifier: result.identifier,
-            method: result.method,
-          });
-
-          setVerificationCode("");
-          switchStep("loginVerifyCode");
-        }
-      }
-
-      // تأیید کد ورود
-      else if (step === "loginVerifyCode") {
-        if (!/^\d{6}$/.test(verificationCode)) {
-          setError("لطفاً کد تأیید شش‌رقمی را کامل وارد کن.");
-          return;
-        }
-
-        await verifyLogin({
-          identifier: verificationData.identifier,
-          method: verificationData.method,
-          code: verificationCode,
-        });
-
-        closeAuthModal();
-      }
-
-      // مرحله اول ثبت‌نام: دریافت شماره موبایل
-      else if (step === "register") {
-        if (!registerData.phone.trim()) {
-          setError("لطفاً شماره موبایل خود را وارد کن.");
-          return;
-        }
-
-        switchStep("finishRegister");
-      }
-
-      // مرحله دوم ثبت‌نام: ایمیل و رمز عبور
-      else if (step === "finishRegister") {
-        const phone = registerData.phone.trim();
-        const email = registerData.email.trim();
-        const { password, confirmPassword } = registerData;
-
-        if (!phone) {
-          setError("شماره موبایل وارد نشده است.");
-          switchStep("register");
-          return;
-        }
-
-        if (password.length < 8) {
-          setError("رمز عبور باید حداقل ۸ کاراکتر باشد.");
-          return;
-        }
-
-        if (password !== confirmPassword) {
-          setError("رمز عبور و تکرار آن یکسان نیستند.");
-          return;
-        }
-
-        const payload = {
-          phone,
-          password,
-          ...(email ? { email: email.toLowerCase() } : {}),
-        };
-
-        await register(payload);
-
-        closeAuthModal();
-      }
-    } catch (error) {
-      setError(
-        error?.response?.data?.message ||
-          error?.message ||
-          "عملیات ناموفق بود. دوباره تلاش کن."
-      );
-    } finally {
-      setIsLoading(false);
-    }
   };
 
-  const handleResend = async () => {
-    if (isLoading) return;
 
-    setError("");
-
+  const handleLogin = async () => {
     try {
       setIsLoading(true);
+      setError("");
 
-      const result = await resendLoginApi(getLoginPayload());
+      const result = await login(loginData);
 
       if (result?.otpRequired) {
         setVerificationData({
-          identifier: result.identifier,
-          method: result.method,
+          identifier: result.identifier || loginData.phone,
+          method: result.method || "phone",
         });
 
         setVerificationCode("");
+        switchStep("loginVerifyCode");
       }
-    } catch (error) {
+    } catch (err) {
       setError(
-        error?.response?.data?.message ||
-          error?.message ||
-          "ارسال مجدد کد ناموفق بود."
+        err?.response?.data?.message ||
+          err.message ||
+          "خطا در ورود"
       );
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleLoginVerifyCode = async () => {
+    if (verificationCode.length !== 6) {
+      setError("کد تأیید باید ۶ رقم باشد");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setError("");
+
+      await verifyLogin({
+        identifier: verificationData.identifier,
+        method: verificationData.method,
+        code: verificationCode,
+      });
+
+      handleCloseAuthModal();
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          err.message ||
+          "کد تأیید نامعتبر است"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLoginResend = async () => {
+    try {
+      setIsLoading(true);
+      setError("");
+
+      await resendLoginApi({
+        phone: loginData.phone,
+        password: loginData.password,
+      });
+
+      return true;
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          err.message ||
+          "ارسال مجدد کد ناموفق بود"
+      );
+
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  const handleRegister = async () => {
+    if (!registerData.phone.trim()) {
+      setError("شماره موبایل را وارد کنید");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setError("");
+
+      const result = await sendRegisterCode({
+        phone: registerData.phone.trim(),
+      });
+
+      setVerificationData({
+        identifier: result.identifier || registerData.phone.trim(),
+        method: result.method || "phone",
+      });
+
+      setVerificationCode("");
+      setRegistrationToken("");
+
+      switchStep("registerVerifyCode");
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          err.message ||
+          "ارسال کد تأیید ناموفق بود"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterVerifyCode = async () => {
+    if (verificationCode.length !== 6) {
+      setError("کد تأیید باید ۶ رقم باشد");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setError("");
+
+      const result = await verifyRegisterCode({
+        phone: verificationData.identifier,
+        code: verificationCode,
+      });
+
+      if (!result?.registrationToken) {
+        throw new Error("توکن ثبت‌نام دریافت نشد");
+      }
+
+      setRegistrationToken(result.registrationToken);
+      setVerificationCode("");
+
+      switchStep("finishRegister");
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          err.message ||
+          "کد تأیید نامعتبر است"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterResend = async () => {
+    try {
+      setIsLoading(true);
+      setError("");
+
+      await sendRegisterCode({
+        phone: verificationData.identifier,
+      });
+
+      return true;
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          err.message ||
+          "ارسال مجدد کد ناموفق بود"
+      );
+
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFinishRegister = async () => {
+    const { name, email, password, confirmPassword } = registerData;
+
+    if (name.trim().length < 2) {
+      setError("نام باید حداقل ۲ کاراکتر باشد");
+      return;
+    }
+
+    if (
+      email.trim() &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+    ) {
+      setError("ایمیل وارد شده معتبر نیست");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("رمز عبور باید حداقل ۸ کاراکتر باشد");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("تکرار رمز عبور با رمز عبور مطابقت ندارد");
+      return;
+    }
+
+    if (!registrationToken) {
+      setError("اعتبار ثبت‌نام منقضی شده است. دوباره اقدام کنید");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setError("");
+
+      await completeRegister({
+        registrationToken,
+        name: name.trim(),
+        email: email.trim() || undefined,
+        password,
+      });
+
+      handleCloseAuthModal();
+      navigate("/dashboard")
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          err.message ||
+          "ثبت‌نام انجام نشد"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // ---------------- RENDER ----------------
+
   return (
-    <AuthModal onSubmit={handleSubmit} isLoading={isLoading}>
+    <AuthModal
+      onClose={handleCloseAuthModal}
+      onSubmit={
+        step === "login"
+          ? handleLogin
+          : step === "loginVerifyCode"
+            ? handleLoginVerifyCode
+            : step === "register"
+              ? handleRegister
+              : step === "registerVerifyCode"
+                ? handleRegisterVerifyCode
+                : handleFinishRegister
+      }
+      isLoading={isLoading}
+    >
       {step === "login" && (
         <LoginForm
-          phone={loginData.phone}
-          password={loginData.password}
+          formData={loginData}
           onChange={handleLoginChange}
+          error={error}
         />
       )}
 
       {step === "loginVerifyCode" && (
         <Verifection
           phone={verificationData.identifier}
-          modal={() => switchStep("login")}
           code={verificationCode}
           onCodeChange={setVerificationCode}
           error={error}
           isLoading={isLoading}
-          onResend={handleResend}
+          onResend={handleLoginResend}
+          modal={() => {
+            setVerificationCode("");
+            setError("");
+            switchStep("login");
+          }}
+          purpose="login"
         />
       )}
 
       {step === "register" && (
         <RegisterForm
-          phone={registerData.phone}
-          onPhoneChange={(value) =>
-            handleRegisterChange("phone", value)
-          }
+          formData={registerData}
+          onChange={handleRegisterChange}
           error={error}
+        />
+      )}
+
+      {step === "registerVerifyCode" && (
+        <Verifection
+          phone={verificationData.identifier}
+          code={verificationCode}
+          onCodeChange={setVerificationCode}
+          error={error}
+          isLoading={isLoading}
+          onResend={handleRegisterResend}
+          modal={() => {
+            setVerificationCode("");
+            setError("");
+            switchStep("register");
+          }}
+          purpose="register"
         />
       )}
 
@@ -232,6 +398,6 @@ const AuthFlow = () => {
       )}
     </AuthModal>
   );
-};
+}
 
 export default AuthFlow;

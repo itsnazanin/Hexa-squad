@@ -18,7 +18,7 @@ const SliderSection = () => {
     const teachers = data?.teachers ?? [];
 
   return (
-    <div className='max-w-[1440px] mx-auto max-h-[660px]'>
+    <div className='w-full mx-auto max-h-[660px]'>
         <div className='h-[600px] bg-[#E3F2FD]'>
            <div className='flex items-center flex-col pt-16'>
              <h2 className="text-[#263238] text-2xl font-extrabold">اساتید برتر</h2>

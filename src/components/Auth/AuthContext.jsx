@@ -1,7 +1,6 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { getProfileApi, loginApi, verifyLoginApi, registerApi } from "@/core/services/api/auth.api";
+import { getProfileApi, loginApi, verifyLoginApi, sendRegisterCodeApi, verifyRegisterCodeApi, completeRegisterApi, logoutApi } from "@/core/services/api/auth.api";
 
 const AuthContext = createContext(null);
 
@@ -21,7 +20,6 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const result = await getProfileApi();
-
       const profile = result.userProfileData;
 
       if (!profile) {
@@ -31,18 +29,22 @@ export const AuthProvider = ({ children }) => {
       setUser(profile);
       return profile;
     } catch (error) {
-      localStorage.removeItem("accessToken");
-      setUser(null);
-      throw error;
+      if (error?.response?.status === 401) {
+        localStorage.removeItem("accessToken")
+        setUser(null)
+      }
+
+      throw error
     }
   };
+
 
   const login = async (data) => {
     return await loginApi(data);
   };
 
-  const verifyLogin = async (data) => {
 
+  const verifyLogin = async (data) => {
     const result = await verifyLoginApi(data);
 
     if (!result.accessToken) {
@@ -50,39 +52,52 @@ export const AuthProvider = ({ children }) => {
     }
 
     localStorage.setItem("accessToken", result.accessToken);
-
     await refreshProfile();
 
     return result;
   };
 
-  const register = async (data) => {
+  // مرحله اول ثبت‌نام: ارسال کد تأیید
+  const sendRegisterCode = async (data) => {
+    return await sendRegisterCodeApi(data);
+  };
 
-    const result = await registerApi(data);
+  // مرحله دوم ثبت‌نام: تأیید کد پیامکی
+  const verifyRegisterCode = async (data) => {
+    return await verifyRegisterCodeApi(data);
+  };
+
+  // مرحله سوم ثبت‌نام: تکمیل اطلاعات و ایجاد حساب
+  const completeRegister = async (data) => {
+    const result = await completeRegisterApi(data);
 
     if (!result.accessToken) {
       throw new Error("Access token was not returned by the server");
     }
 
     localStorage.setItem("accessToken", result.accessToken);
-
-
     await refreshProfile();
 
     return result;
   };
 
-  const logout = () => {
-    localStorage.removeItem("accessToken");
-    setUser(null);
-  };
+  const logout = async () => {
+    try {
+      await logoutApi()
+    }catch(error){
+      console.error("Logout api error:" , error)
+    } finally {
+      localStorage.removeItem("accessToken")
+      setUser(null)
+    }
+  }
 
   useEffect(() => {
     const initializeAuth = async () => {
       try {
         await refreshProfile();
       } catch {
-        // 
+        // اگر توکن معتبر نباشد، refreshProfile آن را پاک می‌کند.
       } finally {
         setLoading(false);
       }
@@ -99,7 +114,9 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         login,
         verifyLogin,
-        register,
+        sendRegisterCode,
+        verifyRegisterCode,
+        completeRegister,
         logout,
         refreshProfile,
       }}

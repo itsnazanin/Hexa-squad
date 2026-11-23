@@ -1,25 +1,27 @@
+
 export const authModalConfig = {
-    login: {
-        translateKey: "login",
-        footerAction: "register"
-    },
-    loginVerifyCode: {
-       translateKey: "loginVerifyCode",
-       footerAction: "resend-code",
-     },
+  login: {
+    translateKey: "login",
+    footerAction: "register",
+  },
 
-    register: {
-       translateKey: "register",
-       footerAction: "login"
-    },
-    finishRegister: {
-       translateKey: "finishRegister",
-       footerAction: null
-    },
+  loginVerifyCode: {
+    translateKey: "loginVerifyCode",
+    footerAction: null,
+  },
 
-    registerVerifyCode: {
-        translateKey: "registerVerifyCode",
-        footerAction: "resend-code",
-    },
+  register: {
+    translateKey: "register",
+    footerAction: "login",
+  },
 
-}
+  registerVerifyCode: {
+    translateKey: "registerVerifyCode",
+    footerAction: null,
+  },
+
+  finishRegister: {
+    translateKey: "finishRegister",
+    footerAction: null,
+  },
+};
