@@ -18,6 +18,8 @@ import ProfilePage from "@/pages/userPannel/ProfilePage";
 import MyCoursesPage from "@/pages/userPannel/MyCoursesPage";
 import ChangePasswordPage from "@/pages/userPannel/ChangePasswordPage";
 import DashboardPage from "@/pages/userPannel/DashboardPage";
+import Teachers from "@/pages/teachers/Teachers";
+import TeachersDetail from "@/pages/teachers/TeachersDetail";
 
 const AppRoutes = () => {
   return (
@@ -36,6 +38,8 @@ const AppRoutes = () => {
         <Route path="/guest-payment" element={<GuestPaymentPage />} />
         <Route path="/payment/:orderId" element={<PaymentPage />} />
         <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/teachers" element={<Teachers />} />
+        <Route path="/teachers/:id" element={<TeachersDetail />} />
 
       </Route>
 

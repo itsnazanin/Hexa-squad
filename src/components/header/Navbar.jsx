@@ -47,7 +47,7 @@ const Navbar = () => {
             </li>
 
             <li>
-              <Link to="" className="no-underline text-inherit">
+              <Link to="/teachers" className="no-underline text-inherit">
                 اساتید
               </Link>
             </li>
@@ -94,7 +94,7 @@ const Navbar = () => {
             />
           </Link>
 
-          {/* Login */}
+          
           
           {!loading && (
             isAuthenticated ? (
